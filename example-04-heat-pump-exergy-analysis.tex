@@ -1,0 +1,94 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+\begin{document}
+\begin{tikzpicture}
+
+%%% components %%%
+%evaporator
+\pic (ev) at (0,0) {heat-exchanger-iso-1};
+\node [above] at (ev-shell top) {\footnotesize EV};
+%compressor
+\pic[scale=0.5] (cp) at (2,1.5) {compressor-iso};
+\node [left] at (cp-left) {\footnotesize CP};
+%condenser
+\pic[rotate=90] (co) at (0,3) {heat-exchanger-iso-2};
+\node [below] at (co-shell left) {\footnotesize CO};
+%valve
+\pic[scale=1.25, rotate=90] (tv) at (-2,1.5) {valve=main};
+\node [left] at (tv-anchor) {\footnotesize TV};
+
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (ev-pipes right) -| (cp-inlet);
+\draw [main stream, signalbraun] (cp-outlet) |- (co-shell bottom);
+\draw [main stream, signalbraun] (co-shell top) -| (tv-right);
+\draw [main stream, signalbraun] (tv-left) |- (ev-pipes left);
+\node [above right] at (1,0) {\footnotesize 1};
+\node [above right] at (1,3) {\footnotesize 2};
+\node [above left] at (-1,3) {\footnotesize 3};
+\node [above left] at (-1,0) {\footnotesize 4};
+\draw [main stream, signalgrau] (0.25,-1.5) -- (ev-shell bottom right);
+\node [above right] at (0.25,-1.5) {\footnotesize 11};
+\draw [main stream, signalgrau] (ev-shell bottom left) -- (-0.25,-1.5);
+\node [above left] at (-0.25,-1.5) {\footnotesize 12};
+\draw [main stream, signalgruen] (0.25,4.5) -- (co-pipes bottom);
+\node [below right] at (0.25,4.5) {\footnotesize 21};
+\draw [main stream, signalgruen] (co-pipes top) -- (-0.25,4.5);
+\node [below left] at (-0.25,4.5) {\footnotesize 22};
+
+%%% energy streams and nodes %%%
+\draw [utility stream] (3,1.5) -- (cp-right);
+\node [right] at (3,1.5) {$\dot W_\text{comp}$};
+
+
+%%% legend %%%%
+\node [align=left,anchor=north west] at (5,2) {\footnotesize 
+	\begin{tabular}{ll}
+	EV&Evaporator\\
+	CP&Compressor\\
+	CO&Condenser\\
+	TV&Throttling Valve\\
+	\end{tabular}
+};	
+
+\draw [main stream, signalgrau] (5,4) -- (6,4);
+\node [right] at (6,4) {\footnotesize Ground heat, air};
+\draw [main stream, signalbraun] (5,3.5) -- (6,3.5);
+\node [right] at (6,3.5) {\footnotesize R407c};
+\draw [main stream, signalgruen] (5,3) -- (6,3);
+\node [right] at (6,3) {\footnotesize Heating, water};
+
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,14 @@
+%:		Pump ISO
+\tikzset{pump-iso/.pic=%
+{%
+\draw [chpunitstyle] (0,0) circle(1);
+\draw [chpunitstyle] (-1,0) -- (0,1);
+\draw [chpunitstyle] (1,0) -- (0,1);
+\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-inlet) at (0,-1);
+		\coordinate (-left) at (-1,0);
+		\coordinate (-right) at (1,0);
+		\coordinate (-outlet) at (0,1);
+	\end{scope}
+	}%
+}

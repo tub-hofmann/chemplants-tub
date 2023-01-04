@@ -1,0 +1,107 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+%\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{blue}{RGB}{0,0,255}
+\definecolor{red}{RGB}{255,0,0}
+
+\begin{document}
+\begin{tikzpicture}
+
+%evaporator
+\pic (ev) at (0,0) {heat exchanger};
+
+%compressor LC
+\pic[scale=0.5] (cp) at (2,1.5) {compressor-iso};
+
+%ihx
+\pic[rotate=90] (ihx) at (0,3) {heat exchanger biphase};
+ 
+%valve LC
+\pic[scale=1.25, rotate=90] (v) at (-2,1.5) {valve=main};
+
+%compressor HC
+\pic[scale=0.5] (cp2) at (2,4.5) {compressor-iso};
+
+%condenser
+\pic[rotate=90] (cd) at (0,6) {heat exchanger biphase};
+
+%valve HC
+\pic[scale=1.25, rotate=90] (v2) at (-2,4.5) {valve=main};
+
+%LC
+\draw [main stream, color=blue] (0.5,0) -| (cp-inlet);
+\draw [main stream, color=blue] (cp-outlet) |- (0.5,3);
+\draw [main stream, color=blue] (-0.5,3) -| (v-right);
+\draw [main stream, color=blue] (v-left) |- (ev-pipes left);
+\draw [utility stream] (0,-1) -- (0,-0.5);
+\node [below] at (0,-1) {$\dot Q_\text{L}$};
+\draw [utility stream] (3,1.5) -- (2.5,1.5);
+\node [right] at (3,1.5) {$\dot W_\text{LC}$};
+\draw [utility stream] (3,4.5) -- (2.5,4.5);
+\node [right] at (3,4.5) {$\dot W_\text{HC}$};
+
+
+%HC
+\draw [main stream, color=red] (ihx-pipes bottom) |- (0.25,3.75) -| (cp2-inlet);
+\draw [main stream, color=red] (cp2-outlet) |- (cd-shell bottom);
+\draw [main stream, color=red] (cd-shell top) -| (v2-right);
+\draw [main stream, color=red] (v2-left) |- (-0.25,3.75) -| (ihx-pipes top);
+\draw [utility stream] (0,6.5) -- (0,7);
+\node [above] at (0,7) {$\dot Q_\text{H}$};
+
+%nodes process 
+\node [above right] at (1,0) {\footnotesize 1};
+\node [above right] at (1,3) {\footnotesize 2};
+\node [above left] at (-1,3) {\footnotesize 3};
+\node [above left] at (-1,0) {\footnotesize 4};
+\node [above right] at (1,3.75) {\footnotesize 5};
+\node [above right] at (1,6) {\footnotesize 6};
+\node [above left] at (-1,6) {\footnotesize 7};
+\node [above left] at (-1,3.75) {\footnotesize 8};
+
+%nodes components
+\node [above] at (0,0.5) {\footnotesize EV};
+\node [left] at (1.5,1.5) {\footnotesize CP\textsubscript{LC}};
+\node [below] at (0,2.5) {\footnotesize CHX};
+\node [left] at (-2,1.5) {\footnotesize TV\textsubscript{LC}};
+\node [left] at (1.5,4.5) {\footnotesize CP\textsubscript{HC}};
+\node [below] at (0,5.5) {\footnotesize CD};
+\node [left] at (-2,4.5) {\footnotesize TV\textsubscript{HC}};
+
+%legend
+
+\node [align=left,anchor=north west] at (6,7) {\footnotesize 
+	\begin{tabular}{ll}
+	EV&Evaporator\\
+	CP\textsubscript{LC}&Compressor (Low Cascade)\\
+	CHX&Cascade Heat Exchanger\\
+	TV\textsubscript{LC}&Throttling Valve (Low Cascade)\\
+	CP\textsubscript{HC}&Compressor (High Cascade)\\
+	CD&Condenser\\
+	TV\textsubscript{HC}&Throttling Valve (High Cascade)\\
+	\end{tabular}
+};	
+
+\end{tikzpicture}
+
+\end{document}

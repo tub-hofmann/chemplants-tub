@@ -1,0 +1,146 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm},
+]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+%define stream tip, default is stealth
+%\setchpstreamtip{latex}
+\setchpmainstreamthickness{very thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{chlorine}{RGB}{0,179,0}
+\definecolor{sodium-hydroxide}{RGB}{144,70,137}
+\definecolor{hydrogen}{RGB}{247,186,11}
+\definecolor{propene}{RGB}{128,64,0}
+\definecolor{allyl-chloride}{RGB}{255,0,0}
+\definecolor{water}{RGB}{21,72,137}
+\definecolor{hydrogen-chloride}{RGB}{212,101,47}
+\definecolor{epichlorohydrin}{RGB}{0,190,190}
+\definecolor{calcium-hydroxide}{RGB}{0,30,60}
+\definecolor{calcium-chloride}{RGB}{130,160,60}
+
+
+\begin{document}
+\begin{tikzpicture}
+%process units and labels
+%electrolyser
+\pic (cae) at (1,0) {electrolyser};
+\node [below] at (cae-bottom) {CAE};
+%chlorine treatment
+\pic[xscale=0.25,yscale=1] (ct) at (-2.5,-0.5) {block};
+\node [align=center] at (-2.5,-0.5) {CT};
+%chlorine compressor
+\pic (cc) at (-2.95,-4) {multistage compressor};
+\node [below] at (cc-bottom) {CC};
+%allyl chloride reactor
+\pic[xscale=0.5,yscale=0.5] (acr) at (1,-4) {block};
+\node [align=center] at (1,-4) {ACR};
+%allyl chloride storage tank
+\pic (acs) at (4,-4) {tank};
+\node [align=center] at (4,-4) {AC-S};
+%hydrochlorination 
+\pic[xscale=0.5,yscale=1] (hcr) at (7,-4) {block};
+\node [align=center] at (7,-4) {HCR};
+%saponification
+\pic[xscale=0.5,yscale=1] (sap) at (10.5,-4) {block};
+\node [align=center] at (10.5,-4) {SAP};
+%epichlorohydrin storage tank
+\pic (echs) at (14,-4) {tank};
+\node [align=center] at (14,-4) {ECH-S};
+
+
+%streams and labeles
+\begin{pgfonlayer}{bg}    % select background layer
+%power
+\draw [secondary stream] (-5,2) -| (cae-top);
+\node [below left, rotate=90] at (-5,2) {from power grid};
+\draw [secondary stream] (-4,2)|- (cc-left);
+%hydrogen
+\draw [main stream, color=hydrogen] (cae-top right) |- (4, 1);
+\node [right, color=hydrogen] at (4,1) {\ce{H2}};
+%sodium hydroxide
+\draw [main stream, color=sodium-hydroxide] (cae-right) |- (4, 0);
+\node [right, color=sodium-hydroxide] at (4,0) {\ce{NaOH}};
+%chlorine streams
+\draw  [main stream,hidden stream,color=chlorine] (cae-top left) |- (-2.5,1) -- (ct-top);
+\node [above left,color=chlorine] at (ct-top) {\footnotesize Cl\textsubscript{2,CAE}};
+\draw  [main stream,hidden stream,color=chlorine] (ct-bottom) -- (cc-first top);
+\node [above left,color=chlorine] at (cc-first top) {\footnotesize Cl\textsubscript{2,CC}};
+\draw  [main stream,hidden stream,color=chlorine] (cc-outlet) -- (acr-left);
+\node [above left,color=chlorine] at (acr-left) {\footnotesize Cl\textsubscript{2,ACR}};
+\draw  [main stream,color=chlorine] (cc-outlet) -| (-1.2,-2.25) -- (7,-2.25) -- (hcr-top);
+\node [above left,color=chlorine] at (hcr-top) {\footnotesize Cl\textsubscript{2,HCR}};
+%propene stream
+\draw  [main stream,hidden stream,color=propene] (1,-6) -- (acr-bottom);
+\node [below,color=propene] at (1,-6) {\footnotesize \ce{C3H6}};
+%allyl chloride streams
+\draw  [main stream,hidden stream,color=allyl-chloride] (acr-right) -- (acs-left);
+\node [above left,color=allyl-chloride] at (acs-left) {\footnotesize \ce{C3H5Cl}};
+\draw  [main stream,color=allyl-chloride] (acs-right) -- (hcr-left);
+\node [above left,color=allyl-chloride] at (hcr-left) {\footnotesize \ce{C3H5Cl}};
+%water streams
+\draw  [main stream,color=water] (7,-6) -- (hcr-bottom);
+\node [below,color=water] at (7,-6) {\footnotesize \ce{H2O}};
+\draw  [main stream,color=water] (hcr-right bottom) -- (sap-left bottom);
+\node [above left,color=water] at (sap-left bottom) {\footnotesize \ce{H2O}};
+\draw  [main stream,color=water] (sap-bottom right) -- (11.125,-5.25);
+\node [below,color=water] at (11.125,-5.25) {\footnotesize \ce{H2O}};
+%hydrogen-chloride
+\draw  [main stream,color=hydrogen-chloride] (hcr-right) -- (sap-left);
+\node [above left,color=hydrogen-chloride] at (sap-left) {\footnotesize \ce{HCl}};
+%
+\draw  [main stream,color=gray] (hcr-right top) -- (sap-left top);
+\node [above left,color=gray] at (sap-left top) {\footnotesize \ce{C3H5ClOH}};
+%calcium hydroxide
+\draw  [main stream,color=calcium-hydroxide] (sap-bottom left) -- (9.875,-5.25);
+\node [below,color=calcium-hydroxide] at (9.875,-5.25) {\footnotesize \ce{Ca(OH)2}};
+%calcium chloride
+\draw  [main stream,color=calcium-chloride] (sap-bottom) -- (10.5,-6);
+\node [below,color=calcium-chloride] at (10.5,-6) {\footnotesize \ce{CaCl2}};
+%ech
+\draw [main stream,color=epichlorohydrin] (sap-right) -- (echs-left);
+\node [above left,color=epichlorohydrin] at (echs-left) {\footnotesize \ce{C3H5ClO}};
+\draw [main stream,color=epichlorohydrin] (echs-right) -- (16,-4);
+\node [right,color=epichlorohydrin] at (16,-4) {\footnotesize \ce{C3H5ClO}};
+\end{pgfonlayer}
+%
+%utility streams and labels
+%
+%legends
+\draw [main stream,color=black] (6,2) -- (7,2);
+\node [right,color=black] at (7,2) {\footnotesize Constant mole flow rate};
+\draw [main stream,hidden stream,color=black] (6,1.5) -- (7,1.5);
+\node [right,color=black] at (7,1.5) {\footnotesize Flexible mole flow rate};
+
+\node [align=left,anchor=north west] at (11.25,2.275) {\footnotesize 
+	\begin{tabular}{ll}
+	CAE&Chlor-alkali electrolysis\\
+	CT&Chlorine treatment\\
+	CC&Chlorine compressor\\
+	ACR&Allyl chloride reactor\\
+	AC-S&Allyl chloride storage tank\\
+	HCR&Hydrochlorination\\
+	SAP&Saponification\\
+	ECH-S&Epichlorohydrin storage tank\\
+	\end{tabular}
+};	
+
+
+
+
+\end{tikzpicture}
+
+\end{document}
