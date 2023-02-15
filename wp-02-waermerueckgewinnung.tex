@@ -1,0 +1,94 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+%\setchpstreamtip{\empty}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (0,-1) grid (7,10);
+%\foreach \pos in {0,1,2,3,4,5,6,7}
+%\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+%%% components %%%
+%evaporator
+\pic (ev) at (2.5,1) {heat-exchanger-iso-1};
+\node [above] at (ev-shell top) {\footnotesize VD};
+%ihx
+\pic[rotate=90,xscale=-1] (ihx) at (5.5,2.5) {heat-exchanger-iso-1};
+\node [below, anchor=north east] at (ihx-pipes right) {\footnotesize WRG1};
+%compressor
+\pic[scale=0.5] (cp) at (5.5,6.5) {compressor-iso};
+\node [left, anchor=south east] at (cp-outlet) {\footnotesize VE1};
+%condenser
+\pic[rotate=90] (co) at (2.5,8.5) {heat-exchanger-iso-2};
+\node [above, anchor=south east] at (co-shell top) {\footnotesize KO};
+%valve
+\pic[scale=1.25, rotate=90] (tv) at (1,6.5) {valve=main};
+\node [right] at (tv-anchor) {\footnotesize DR1};
+
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (ev-pipes right) -| (ihx-pipes right);
+\draw [main stream, signalbraun] (ihx-pipes left) -- (cp-inlet);
+\draw [main stream, signalbraun] (cp-outlet) |- (co-shell bottom);
+\draw [main stream, signalbraun] (co-shell top) -| (1,7.75) -| (2.75,2.75) -- (ihx-shell top left);
+\draw [main stream, signalbraun] (ihx-shell top right) -| (2.25,7.25) -| (tv-right);
+\draw [main stream, signalbraun] (tv-left) |- (ev-pipes left);
+\node [above, signalbraun] at (4,1) {\footnotesize 31};
+\node [left, signalbraun] at (5.5,5) {\footnotesize 32};
+\node [above, signalbraun] at (4,8.5) {\footnotesize 33};
+\node [above, signalbraun] at (4,2.75) {\footnotesize 34};
+\node [below, signalbraun] at (4,2.25) {\footnotesize 35};
+\node [above, signalbraun] at (1.5,1) {\footnotesize 36};
+\draw [main stream, signalgrau] (2.75,-0.5) -- (ev-shell bottom right);
+\node [above right, signalgrau] at (2.75,-0.5) {\footnotesize 11};
+\draw [main stream, signalgrau] (ev-shell bottom left) -- (2.25,-0.5);
+\node [above left, signalgrau] at (2.25,-0.5) {\footnotesize 12};
+\draw [main stream, signalgruen] (2.75,10) -- (co-pipes bottom);
+\node [below right, signalgruen] at (2.75,10) {\footnotesize 21};
+\draw [main stream, signalgruen] (co-pipes top) -- (2.25,10);
+\node [below left, signalgruen] at (2.25,10) {\footnotesize 22};
+
+%%% energy streams and nodes %%%
+
+%%% system boundary %%%
+
+%%% legend %%%%
+
+
+
+\end{tikzpicture}
+
+\end{document}
