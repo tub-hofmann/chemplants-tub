@@ -1,0 +1,14 @@
+%:		Heat demand
+\tikzset{heat demand/.pic=%
+	{%
+	\draw [chpunitstyle]
+		(0,0) circle (0.66) circle (1);
+	\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+		\coordinate (-left) at (-0.5,0);
+		\coordinate (-bottom) at (0,-0.5);
+		\coordinate (-right) at (0.5,0);
+		\coordinate (-top) at (0,0.5);
+	\end{scope}
+	}%
+}

@@ -1,0 +1,78 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+% TABLEAU-10
+\definecolor{Tab10-A}{RGB}{78, 121, 167}
+\definecolor{Tab10-B}{RGB}{242, 142, 43}
+\definecolor{Tab10-C}{RGB}{225, 87, 89}
+\definecolor{Tab10-D}{RGB}{118, 183, 178}
+\definecolor{Tab10-E}{RGB}{89, 161, 79}
+\definecolor{Tab10-F}{RGB}{237, 201, 72}
+\definecolor{Tab10-G}{RGB}{176, 122, 161}
+\definecolor{Tab10-H}{RGB}{255, 157, 167}
+\definecolor{Tab10-I}{RGB}{156, 117, 95}
+\definecolor{Tab10-J}{RGB}{186, 176, 172}
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (-2,-1) grid (8,5);
+%\foreach \pos in {-2,-1,0,1,2,3,4,5,6,7,8}
+%\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-1,0,1,2,3,4,5}
+%\draw[shift={(-2,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+%components
+\pic[scale=0.75,rotate=90] (airsrc) at (1,-1) {inlet};
+\pic[scale=0.5] (co) at (1,1) {compressor-iso};
+\pic[scale=0.75,rotate=270] (fuelsrc) at (3,5) {inlet};
+\pic (cc) at (3,3) {combustion-chamber-din};
+\pic[xscale=1.25,yscale=2] (exp) at (5.5,1) {turbine};
+\pic[scale=0.5] (gen) at (7.5,1) {generator-iso};
+\pic[scale=0.75,rotate=270] (exhaustsnk) at (6,-1) {outlet};
+
+%streams
+\draw [main stream] (airsrc-stream) -- (co-inlet);
+\draw [main stream] (co-outlet) |- (cc-oxidant inlet);
+\draw [main stream] (fuelsrc-stream) -- (cc-fuel inlet);
+\draw [main stream] (cc-exhaust outlet) -| (exp-inlet top);
+\draw [main stream] (exp-outlet bottom) -- (exhaustsnk-stream);
+
+
+\draw [solid] (co-right) -- (exp-left);
+\draw [solid] (exp-right) -- (gen-left);
+
+
+\end{tikzpicture}
+
+\end{document}

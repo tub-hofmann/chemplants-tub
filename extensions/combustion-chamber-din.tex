@@ -1,0 +1,25 @@
+%:		Combuation Chamber DIN 2481
+\tikzset{combustion-chamber-din/.pic=%
+	{%
+	\draw [chpunitstyle]
+		(-0.5,-0.5) rectangle (0.5,0.5);
+    \draw [chpunitstyle]
+        (0,0) circle (0.225);
+        (0,0) circle (0.275); 
+    \fill  [even odd rule]
+        (0,0) circle (0.275) 
+        (0,0) circle (0.225);
+    \draw [chpunitstyle]
+        (30:0.25) -- (240:0.25)
+        (60:0.25) -- (210:0.25)
+        (120:0.25) -- (330:0.25)
+        (150:0.25) -- (300:0.25);
+    \begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+        \coordinate (-oxidant inlet) at (-0.5,0);
+		\coordinate (-fuel inlet) at (0,0.5);
+        \coordinate (-exhaust outlet) at (0.5,0);
+        \coordinate (-ash outlet) at (0,-0.5);
+	\end{scope}
+	}%
+}
