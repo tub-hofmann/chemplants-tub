@@ -54,12 +54,18 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 
 %components
 \pic[scale=0.75,rotate=90] (airsrc) at (1,-1) {inlet};
+\node [left] at (airsrc-top) {\footnotesize SRC-A};
 \pic[scale=0.5] (co) at (1,1) {compressor-iso};
+\node [left] at (co-left) {\footnotesize AC};
 \pic[scale=0.75,rotate=270] (fuelsrc) at (3,5) {inlet};
+\node [left] at (fuelsrc-bottom) {\footnotesize SRC-F};
 \pic (cc) at (3,3) {combustion-chamber-din};
+\node [below] at (cc-ash outlet) {\footnotesize CC};
 \pic[xscale=1.25,yscale=2] (exp) at (5.5,1) {turbine};
+\node [right] at (exp-outlet top) {\footnotesize EXP};
 \pic[scale=0.5] (gen) at (7.5,1) {generator-iso};
 \pic[scale=0.75,rotate=270] (exhaustsnk) at (6,-1) {outlet};
+\node [right] at (exhaustsnk-top) {\footnotesize SNK-E};
 
 %streams
 \draw [main stream] (airsrc-stream) -- (co-inlet);
@@ -71,6 +77,27 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 
 \draw [solid] (co-right) -- (exp-left);
 \draw [solid] (exp-right) -- (gen-left);
+
+%nodes
+\node [left] at (1,-0.5) {\footnotesize 1};
+\node [left] at (1,3) {\footnotesize 2};
+\node [left] at (3,4.5) {\footnotesize 3};
+\node [right] at (5,3) {\footnotesize 4};
+\node [right] at (6,-0.5) {\footnotesize 5};
+
+%%% legend %%%%
+\node [align=left,anchor=north west] at (9,3) {\footnotesize 
+	\begin{tabular}{ll}
+    AC & Air Compressor \\
+    CC & Combustion Chamber \\
+    EXP & Expander \\
+    G & Generator \\
+    SRC-A & Source, Air \\
+    SRC-F & Source, Fuel \\
+    SNK-E & Sink, Exhaust \\
+    \end{tabular}
+};	
+
 
 
 \end{tikzpicture}

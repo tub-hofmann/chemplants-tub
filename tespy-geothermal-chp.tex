@@ -1,0 +1,184 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage{siunitx} 
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+% TABLEAU-10
+\definecolor{Tab10-A}{RGB}{78, 121, 167}
+\definecolor{Tab10-B}{RGB}{242, 142, 43}
+\definecolor{Tab10-C}{RGB}{225, 87, 89}
+\definecolor{Tab10-D}{RGB}{118, 183, 178}
+\definecolor{Tab10-E}{RGB}{89, 161, 79}
+\definecolor{Tab10-F}{RGB}{237, 201, 72}
+\definecolor{Tab10-G}{RGB}{176, 122, 161}
+\definecolor{Tab10-H}{RGB}{255, 157, 167}
+\definecolor{Tab10-I}{RGB}{156, 117, 95}
+\definecolor{Tab10-J}{RGB}{186, 176, 172}
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (-4,-3) grid (18,10);
+%\foreach \pos in {-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18}
+%\draw[shift={(\pos,-3)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(-4,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+%components geo, feed
+\pic[scale=0.75,rotate=0] (gtsrc) at (0,7.5) {inlet};
+\node [above] at (gtsrc-top) {\footnotesize SRC-GF};
+\pic[scale=0.33] (sep) at (3,7.5) {gas-liquid separator};
+\node [left] at (sep-bottom left) {\footnotesize SEP};
+
+%components geo, return
+\pic[scale=1.25, rotate=0] (mix) at (3,0) {valve triple=main};
+
+\pic[scale=0.33,rotate=90] (p3) at (8.5,0) {pump-iso};
+\node [below] at (p3-left) {\footnotesize P3};
+\pic[scale=0.33] (m3) at (8.5,1) {motor-iso};
+\node [above] at (m3-top) {\footnotesize M3};
+
+\pic[scale=0.33,rotate=90] (p4) at (1.5,0) {pump-iso};
+\node [below] at (p4-left) {\footnotesize P4};
+\pic[scale=0.33] (m4) at (1.5,1) {motor-iso};
+\node [above] at (m4-top) {\footnotesize M4};
+
+\pic[scale=0.75,rotate=180] (gtsnk) at (0,0) {outlet};
+\node [below] at (gtsnk-top) {\footnotesize SNK-GF};
+
+%components orc1
+\pic[xscale=1.25,yscale=1] (turb1) at (6.5,7.5) {turbine};
+\node [right] at (turb1-outlet top) {\footnotesize T1};
+
+\pic (cond1) at (7,3) {condenser-iso};
+
+\pic[scale=0.33,rotate=90] (p1) at (5,1) {pump-iso};
+\node [below] at (p1-left) {\footnotesize P2};
+\pic[scale=0.33] (m1) at (5,2) {motor-iso};
+\node [above] at (m1-top) {\footnotesize M2};
+
+\pic[scale=0.5] (drum1) at (5,5.625) {steamdrum};
+\node [above,anchor=south east] at (drum1-top) {\footnotesize D1};
+\pic[rotate=270] (evap1) at (3,5) {evaporator};
+\node [left] at (evap1-pipes bottom left) {\footnotesize EV1};
+\pic (eco1) at (3,3) {heat-exchanger-iso-2};
+\node [above,rotate=90] at (eco1-shell left) {\footnotesize ECO1};
+
+%components dh
+\pic[scale=0.75,rotate=180] (dhsrc) at (13,2.75) {inlet};
+\node [below] at (dhsrc-top) {\footnotesize SRC-DH};
+\pic[scale=0.75,rotate=0] (dhsnk) at (13,5.25) {outlet};
+\node [above] at (dhsnk-top) {\footnotesize SNK-DH};
+\pic (dhcond) at (10,5) {condenser-iso};
+\node [left] at (dhcond-shell left) {\footnotesize CD-DH};
+\pic (dheco) at (10,3) {heat-exchanger-iso-2};
+\node [above,rotate=90] at (dheco-shell left) {\footnotesize ECO-DH};
+
+%components coolant
+\pic[scale=0.75,rotate=180] (clsrc) at (8.5,2.75) {inlet};
+\node [below] at (clsrc-top) {\footnotesize SRC-CL};
+\pic[scale=0.75,rotate=0] (clsnk) at (8.5,3.25) {outlet};
+\node [above] at (clsnk-top) {\footnotesize SNK-CL};
+
+%components steam
+\pic[xscale=1.25,yscale=2] (st) at (9.5,7.5) {turbine};
+\node [right] at (st-outlet top) {\footnotesize ST};
+
+%pipes water
+\draw [main stream, signalgruen] (gtsrc-stream) |- (sep-inlet left); 
+\draw [main stream, signalgruen] (sep-liquid outlet) -- (evap1-shell left); 
+\draw [main stream,signalgruen] (evap1-shell right) -- (eco1-shell top);
+\draw [main stream,signalgruen] (eco1-shell bottom) -- (mix-top);
+\draw [main stream,signalgruen] (mix-left) -- (p4-inlet);
+\draw [main stream,signalgruen] (p4-outlet) -- (gtsnk-stream);
+\draw [solid] (p4-right) -- (m4-bottom);
+\draw [main stream,signalgruen] (dhcond-shell bottom) -- (dheco-shell top);
+\draw [main stream,signalgruen] (dheco-shell bottom) |- (p3-inlet);
+\draw [main stream,signalgruen] (p3-outlet) -- (mix-right);
+\draw [solid] (p3-right) -- (m3-bottom);
+
+%pipes steam
+\draw [main stream, signalrot] (sep-gas outlet) |- (6,9) -| (st-inlet top);
+\draw [main stream, signalrot] (st-outlet bottom) -- (dhcond-shell top);
+
+%pipes orc1
+\draw [main stream,signalbraun] (cond1-shell bottom) |- (p1-inlet);
+\draw [main stream,signalbraun] (p1-outlet) -| (4,2) |- (eco1-pipes bottom);
+\draw [main stream,signalbraun] (eco1-pipes top) -| (6,5) |- (drum1-right);
+\draw [main stream,signalbraun] (drum1-bottom) |- (evap1-pipes top right);
+\draw [main stream,signalbraun] (evap1-pipes top left) -- (drum1-left);
+\draw [main stream,signalbraun] (drum1-top) |- (6,6.5) -- (turb1-inlet bottom);
+\draw [main stream,signalbraun] (turb1-outlet bottom) -- (cond1-shell top);
+\draw [solid] (p1-right) -- (m1-bottom);
+
+%pipes dh
+\draw [main stream,signalgruen] (dhsrc-stream) -- (dheco-pipes bottom);
+\draw [main stream,signalgruen] (dheco-pipes top) -| (11,4) |- (dhcond-pipes bottom);
+\draw [main stream,signalgruen] (dheco-pipes top) -| (11,4) |- (dhcond-pipes bottom);
+\draw [main stream,signalgruen] (dhcond-pipes top) -- (dhsnk-stream);
+
+%pipes coolant
+\draw [main stream,signalgelb] (clsrc-stream) -- (cond1-pipes bottom);
+\draw [main stream,signalgelb] (cond1-pipes top) -- (clsnk-stream);
+
+% generator and turbine shafts
+\pic[scale=0.5] (gen) at (15.5,7.5) {generator-iso};
+\draw [solid] (turb1-right) -- (st-left);
+\draw [solid] (st-right) -- (gen-left);
+
+%nodes
+\node [above,signalgruen] at (1.5,7.5) {\footnotesize 11};
+\node [above,signalrot] at (6.5,9) {\footnotesize 12};
+\node [left,signalrot] at (10,6) {\footnotesize 13};
+\node [left,signalgruen] at (10,4) {\footnotesize 14};
+\node [above,signalgruen] at (9.5,0) {\footnotesize 15};
+\node [above,signalgruen] at (6.5,0) {\footnotesize 16};
+\node [left,signalgruen] at (3,6.5) {\footnotesize 17};
+\node [left,signalgruen] at (3,4) {\footnotesize 18};
+\node [left,signalgruen] at (3,1.5) {\footnotesize 19};
+\node [above,signalgruen] at (2.5,0) {\footnotesize 20};
+\node [above,signalgruen] at (0.5,0) {\footnotesize 21};
+
+\node [left,signalbraun] at (4,2) {\footnotesize 31};
+\node [above,signalbraun] at (4,3.25) {\footnotesize 32};
+\node [above,signalbraun] at (4,4.375) {\footnotesize 33};
+\node [above,signalbraun] at (4,5.625) {\footnotesize 34};
+\node [above,signalbraun] at (5.5,6.5) {\footnotesize 35};
+\node [left,signalbraun] at (7,6) {\footnotesize 36};
+\node [above,signalbraun] at (6.5,1) {\footnotesize 37};
+
+\node [above,signalgruen] at (12,2.75) {\footnotesize 61};
+\node [right,signalgruen] at (11,4) {\footnotesize 62};
+\node [above,signalgruen] at (12,5.25) {\footnotesize 63};
+
+\end{tikzpicture}
+\end{document}
