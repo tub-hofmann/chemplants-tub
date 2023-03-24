@@ -1,0 +1,107 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+% TABLEAU-10
+\definecolor{Tab10-A}{RGB}{78, 121, 167}
+\definecolor{Tab10-B}{RGB}{242, 142, 43}
+\definecolor{Tab10-C}{RGB}{225, 87, 89}
+\definecolor{Tab10-D}{RGB}{118, 183, 178}
+\definecolor{Tab10-E}{RGB}{89, 161, 79}
+\definecolor{Tab10-F}{RGB}{237, 201, 72}
+\definecolor{Tab10-G}{RGB}{176, 122, 161}
+\definecolor{Tab10-H}{RGB}{255, 157, 167}
+\definecolor{Tab10-I}{RGB}{156, 117, 95}
+\definecolor{Tab10-J}{RGB}{186, 176, 172}
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (-2,-4) grid (7,5);
+%\foreach \pos in {-2,-1,0,1,2,3,4,5,6,7}
+%\draw[shift={(\pos,-4)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-4,-3,-2,-1,0,1,2,3,4,5}
+%\draw[shift={(-2,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+%components
+\pic[scale=0.5,rotate=270] (co) at (1,1) {compressor-iso};
+\node [above] at (co-left) {\footnotesize Compressor};
+\pic[rotate=270] (cooler) at (4,1) {heat-exchanger-iso-2};
+\node [above] at (cooler-shell left) {\footnotesize Heater/Cooler};
+
+\pic[scale=0.4,rotate=270] (co2) at (-0.5,-2.5) {compressor-iso};
+\pic[xscale=0.25,yscale=0.5] (idhx) at (1,-2.5) {block};
+\node at (idhx-anchor) {\footnotesize Ideal};
+
+\pic[xscale=0.25,yscale=0.5] (idco) at (4,-2.5) {block};
+\node at (idco-anchor) {\footnotesize Ideal};
+\pic[scale=0.75,rotate=270] (cooler2) at (5.5,-2.5) {heat-exchanger-iso-2};
+
+%streams
+\draw [main stream] (-1,1) -- (co-inlet);
+\draw [main stream] (co-outlet) -- (cooler-shell bottom);
+\draw [main stream] (cooler-shell top) -- (6,1);
+\draw [main stream] (6,0) -| (cooler-pipes top);
+\draw [main stream] (cooler-pipes bottom) |- (2.5,0);
+
+\draw [main stream] (-1.5,-2.5) -- (co2-inlet);
+\draw [main stream] (co2-outlet) -- (idhx-left);
+\draw [main stream] (idhx-right) -- (2,-2.5);
+\draw [main stream] (2,-3.25) -| (idhx-bottom right);
+\draw [main stream] (idhx-bottom left) |- (0,-3.25);
+
+\draw [main stream] (3,-2.5) -- (idco-left);
+\draw [main stream] (idco-right) -- (cooler2-shell bottom);
+\draw [main stream] (cooler2-shell top) -- (6.5,-2.5);
+\draw [main stream] (6.5,-3.25) -| (cooler2-pipes top);
+\draw [main stream] (cooler2-pipes bottom) |- (5,-3.25) -| (idco-bottom right);
+\draw [main stream] (idco-bottom left) |- (3,-3.25);
+
+\draw [utility stream] (0.5,-0.5) -- (0,-1.5);
+\draw [utility stream] (4.5,-0.5) -- (5,-1.5);
+
+%nodes
+\node [above] at (-0.5,1) {\footnotesize 1};
+\node [above] at (2.5,1) {\footnotesize 2};
+\node [above] at (5.5,1) {\footnotesize 3};
+
+\node [left, anchor=south east] at (6,0) {\footnotesize Heating};
+\node [left, anchor=north east] at (6,0) {\footnotesize Cooling};
+
+\node [align=center] at (2.5,-1) {\footnotesize Decomposition and analysis\\ \footnotesize based on idealization};
+
+
+
+
+\end{tikzpicture}
+
+\end{document}
