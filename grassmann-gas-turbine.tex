@@ -1,0 +1,105 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm -16mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+% TABLEAU-10
+\definecolor{Tab10-A}{RGB}{78, 121, 167}
+\definecolor{Tab10-B}{RGB}{242, 142, 43}
+\definecolor{Tab10-C}{RGB}{225, 87, 89}
+\definecolor{Tab10-D}{RGB}{118, 183, 178}
+\definecolor{Tab10-E}{RGB}{89, 161, 79}
+\definecolor{Tab10-F}{RGB}{237, 201, 72}
+\definecolor{Tab10-G}{RGB}{176, 122, 161}
+\definecolor{Tab10-H}{RGB}{255, 157, 167}
+\definecolor{Tab10-I}{RGB}{156, 117, 95}
+\definecolor{Tab10-J}{RGB}{186, 176, 172}
+
+\begin{document}
+\begin{tikzpicture}[font=\Large]
+
+%help grid and labels
+%\draw[help lines] (-4,-3) grid (18,10);
+%\foreach \pos in {-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18}
+%\draw[shift={(\pos,-3)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(-4,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+
+%streams
+%shaft
+\draw [Tab10-A, line width=23pt, rounded corners=5pt] (10.5,2.5) -| (12,5) -| (-1,0) -- (0.5,0);
+%fuel in
+\draw [Tab10-F, line width=100pt, rounded corners=5pt] (4,7) |- (6.5,1.5);
+%air in
+\draw [line width=0.1pt, rounded corners=5pt] (-3,-1) -- (0.5,-1);
+%compessed air
+\draw [Tab10-B, line width=21.3pt, rounded corners=5pt] (1.5,-0.75) -- (6.5,-0.75);
+%combustion gases
+\draw [Tab10-B, line width=91.8pt, rounded corners=5pt] (7.5,1.5) -- (9.5,1.5);
+%exhaust
+\draw [Tab10-C, line width=32.8pt, rounded corners=5pt] (10.5,-0.5) -| (14,-4);
+%work
+\draw [Tab10-E, line width=34.2pt, rounded corners=5pt] (10.5,1) -- (16,1);
+%comp-ed
+\draw [Tab10-G, line width=1.7pt, rounded corners=5pt] (1.5,-1.25) -| (2.5,-4);
+%cc-ed
+\draw [Tab10-G, line width=29.5pt, rounded corners=5pt] (7.5,-1) -| (8.5,-4);
+%exp-ed
+\draw [Tab10-G, line width=1.85pt, rounded corners=5pt] (10.5,-1.25) -| (11.5,-4);
+
+%nodes
+\node [below] at (4,7) {$\dot E^\text{TOT}_\text{F}$ | 100\%};
+\node at (8.5,1.5) {91.8\%};
+\node at (8.5,5) {23.0\%};
+\node [above] at (4.5,-1) {21.3\%};
+\node [below] at (2.5,-4) {$\dot E_\text{D,AC}$ | 1.7\%};
+\node [below, anchor=north east] at (8.5,-4) {$\dot E_\text{D,CC}$ | 29.5\%};
+\node [below] at (11.5,-4) {$\dot E_\text{D,EXP}$ | 1.85\%};
+\node [below, anchor=north west] at (14,-4) {$\dot E^\text{TOT}_\text{L}$ | 32.8\%};
+\node at (13,1) {$\dot E^\text{TOT}_\text{P}$ | 34.2\%};
+\node [right, anchor=south west] at (-3,-1) {Air};
+\node [left, anchor=south east] at (15,6) {System Boundary};
+
+%%% system boundary %%%
+\draw[dashed] (-2,6) rectangle (15,-3);
+
+%components
+\pic[xscale=0.33,yscale=3.5] (co) at (1,1) {block};
+\node [rotate=90] at (co-anchor) {Air Compressor};
+\pic[xscale=0.33,yscale=3.5] (cc) at (7,1) {block};
+\node [rotate=90] at (cc-anchor) {Comb. Chamber};
+\pic[xscale=0.33,yscale=3.5] (exp) at (10,1) {block};
+\node [rotate=90] at (exp-anchor) {Expander};
+
+
+\end{tikzpicture}
+
+\end{document}

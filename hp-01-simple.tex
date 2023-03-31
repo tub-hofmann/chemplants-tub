@@ -44,16 +44,16 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 %%% components %%%
 %evaporator
 \pic (ev) at (2.5,1) {heat-exchanger-iso-1};
-\node [above] at (ev-shell top) {\footnotesize VD};
+\node [above] at (ev-shell top) {\footnotesize EV};
 %compressor
 \pic[scale=0.5] (cp) at (5.5,6.5) {compressor-iso};
-\node [left] at (cp-left) {\footnotesize VE};
+\node [left] at (cp-left) {\footnotesize CP};
 %condenser
 \pic[rotate=90] (co) at (2.5,8.5) {heat-exchanger-iso-2};
-\node [below] at (co-shell left) {\footnotesize KO};
+\node [below] at (co-shell left) {\footnotesize CO};
 %valve
 \pic[scale=1.25, rotate=90] (tv) at (1,6.5) {valve=main};
-\node [right] at (tv-anchor) {\footnotesize DR};
+\node [right] at (tv-anchor) {\footnotesize TV};
 
 
 

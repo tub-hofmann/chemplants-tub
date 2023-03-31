@@ -1,0 +1,130 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+\begin{document}
+\begin{tikzpicture}
+
+
+% ############## heat pump energybalance ####
+
+%%% components %%%
+%heat pump
+\pic[xscale=0.5,yscale=1] (wp) at (0,0) {block};
+\node [align=center] at (wp-anchor) {\footnotesize HP};
+
+%%% pipes and nodes %%%
+\draw [main stream, signalgrau] (0.625,-2) -- (wp-bottom right);
+\node [above right] at (0.625,-2) {\footnotesize $\dot H_{11}$};
+\draw [main stream, signalgrau] (wp-bottom left) -- (-0.625,-2);
+\node [above left] at (-0.625,-2) {\footnotesize $\dot H_{12}$};
+\draw [main stream, signalgruen] (0.625,2) -- (wp-top right);
+\node [below right] at (0.625,2) {\footnotesize $\dot H_{21}$};
+\draw [main stream, signalgruen] (wp-top left) -- (-0.625,2);
+\node [below left] at (-0.625,2) {\footnotesize $\dot H_{22}$};
+
+%%% energy streams and nodes %%%
+\draw [utility stream] (2,0) -- (wp-right);
+\node [right] at (2,0) {\footnotesize $\dot W_\text{el}$};
+
+%%% system boundary %%%
+\draw[dashed] (-1.25,1.25) rectangle (1.25,-1.25);
+
+%%% mathematics %%%
+\node [below] at (0.625,-2.1) {\footnotesize $T_{11} \gtreqqless T_0$};
+\node [below] at (0.625,-2.7) {\footnotesize $\dot H_{11}-\dot H_{12}>0$};
+
+
+% ############## heat pump exergybalance 1 ####
+
+%%% components %%%
+%heat pump
+\pic[xscale=0.5,yscale=1] (wp1) at (5,0) {block};
+\node [align=center] at (wp1-anchor) {\footnotesize HP};
+
+%%% pipes and nodes %%%
+\draw [main stream, signalgrau] (5.625,-2) -- (wp1-bottom right);
+\node [above right] at (5.625,-2) {\footnotesize $\dot E_{11}$};
+\draw [main stream, signalgrau] (wp1-bottom left) -- (4.375,-2);
+\node [above left] at (4.375,-2) {\footnotesize $\dot E_{12}$};
+\draw [main stream, signalgruen] (5.625,2) -- (wp1-top right);
+\node [below right] at (5.625,2) {\footnotesize $\dot E_{21}$};
+\draw [main stream, signalgruen] (wp1-top left) -- (4.375,2);
+\node [below left] at (4.375,2) {\footnotesize $\dot E_{22}$};
+
+%%% energy streams and nodes %%%
+\draw [utility stream] (7,0) -- (wp1-right);
+\node [right] at (7,0) {\footnotesize $\dot W_\text{el}$};
+\draw [utility stream, dashdotted] (5,-0.25) -- (7,-1);
+\node [right, anchor=west] at (7,-1) {\footnotesize $\sum\limits_k\dot E_{\text{D,}k}$};
+
+%%% system boundary %%%
+\draw[dashed] (3.75,1.25) rectangle (6.25,-1.25);
+
+%%% mathematics %%%
+\node [below] at (5.625,-2.1) {\footnotesize $T_{11} \leq T_0$};
+\node [below] at (5.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}<0$};
+
+
+% ############## heat pump exergybalance 2 ####
+
+%%% components %%%
+%heat pump
+\pic[xscale=0.5,yscale=1] (wp1) at (10,0) {block};
+\node [align=center] at (wp1-anchor) {\footnotesize HP};
+
+%%% pipes and nodes %%%
+\draw [main stream, signalgrau] (10.625,-2) -- (wp1-bottom right);
+\node [above right] at (10.625,-2) {\footnotesize $\dot E_{11}$};
+\draw [main stream, signalgrau] (wp1-bottom left) -- (9.375,-2);
+\node [above left] at (9.375,-2) {\footnotesize $\dot E_{12}$};
+\draw [main stream, signalgruen] (10.625,2) -- (wp1-top right);
+\node [below right] at (10.625,2) {\footnotesize $\dot E_{21}$};
+\draw [main stream, signalgruen] (wp1-top left) -- (9.375,2);
+\node [below left] at (9.375,2) {\footnotesize $\dot E_{22}$};
+
+%%% energy streams and nodes %%%
+\draw [utility stream] (12,0) -- (wp1-right);
+\node [right] at (12,0) {\footnotesize $\dot W_\text{el}$};
+\draw [utility stream, dashdotted] (10,-0.25) -- (12,-1);
+\node [right, anchor=west] at (12,-1) {\footnotesize $\sum\limits_k\dot E_{\text{D,}k}$};
+
+%%% system boundary %%%
+\draw[dashed] (8.75,1.25) rectangle (11.25,-1.25);
+
+%%% mathematics %%%
+\node [below] at (10.625,-2.1) {\footnotesize $T_{11} > T_0$};
+\node [below] at (10.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}>0$};
+
+
+\end{tikzpicture}
+
+\end{document}
