@@ -34,6 +34,9 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \begin{tikzpicture}
 
 
+\node [align=center] at (7.5,2.5) {\footnotesize for all cases $T_{12} \leq T_{11}$};
+
+
 % ############## heat pump energybalance ####
 
 %%% components %%%
@@ -61,6 +64,7 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 %%% mathematics %%%
 \node [below] at (0.625,-2.1) {\footnotesize $T_{11} \gtreqqless T_0$};
 \node [below] at (0.625,-2.7) {\footnotesize $\dot H_{11}-\dot H_{12}>0$};
+\node [below] at (0,-3.4) {\footnotesize $COP_\text{HP} = \dfrac{\dot H_{22}-\dot H_{21}}{\dot W_\text{el}}$};
 
 
 % ############## heat pump exergybalance 1 ####
@@ -68,13 +72,11 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 %%% components %%%
 %heat pump
 \pic[xscale=0.5,yscale=1] (wp1) at (5,0) {block};
-\node [align=center] at (wp1-anchor) {\footnotesize HP};
+\node [align=center] at (wp1-anchor) {\footnotesize HP\\ \tiny space heating};
 
 %%% pipes and nodes %%%
-\draw [main stream, signalgrau] (5.625,-2) -- (wp1-bottom right);
-\node [above right] at (5.625,-2) {\footnotesize $\dot E_{11}$};
-\draw [main stream, signalgrau] (wp1-bottom left) -- (4.375,-2);
-\node [above left] at (4.375,-2) {\footnotesize $\dot E_{12}$};
+\draw [main stream, signalrot] (wp1-bottom) -- (5,-2);
+\node [above right] at (5,-2) {\footnotesize $\dot E_{q}(T_0)=0$};
 \draw [main stream, signalgruen] (5.625,2) -- (wp1-top right);
 \node [below right] at (5.625,2) {\footnotesize $\dot E_{21}$};
 \draw [main stream, signalgruen] (wp1-top left) -- (4.375,2);
@@ -90,29 +92,36 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \draw[dashed] (3.75,1.25) rectangle (6.25,-1.25);
 
 %%% mathematics %%%
-\node [below] at (5.625,-2.1) {\footnotesize $T_{11} \leq T_0$};
-\node [below] at (5.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}<0$};
+\node [align=center, below] at (5,-2.2) {\footnotesize Evaporator as \\ \footnotesize dissipative component};
+%\node [below] at (5.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}<0$};
+\node [below] at (5,-3.4) {\footnotesize $\varepsilon_\text{HP} = \dfrac{\dot E_{22}-\dot E_{21}}{\dot W_\text{el}}$};
+
+
+
+
+
+
 
 
 % ############## heat pump exergybalance 2 ####
 
 %%% components %%%
 %heat pump
-\pic[xscale=0.5,yscale=1] (wp1) at (10,0) {block};
-\node [align=center] at (wp1-anchor) {\footnotesize HP};
+\pic[xscale=0.5,yscale=1] (wp2) at (10,0) {block};
+\node [align=center] at (wp2-anchor) {\tiny Combined \\ \tiny refrigeration/\\ \tiny heat pump};
 
 %%% pipes and nodes %%%
-\draw [main stream, signalgrau] (10.625,-2) -- (wp1-bottom right);
+\draw [main stream, signalgrau] (10.625,-2) -- (wp2-bottom right);
 \node [above right] at (10.625,-2) {\footnotesize $\dot E_{11}$};
-\draw [main stream, signalgrau] (wp1-bottom left) -- (9.375,-2);
+\draw [main stream, signalgrau] (wp2-bottom left) -- (9.375,-2);
 \node [above left] at (9.375,-2) {\footnotesize $\dot E_{12}$};
-\draw [main stream, signalgruen] (10.625,2) -- (wp1-top right);
+\draw [main stream, signalgruen] (10.625,2) -- (wp2-top right);
 \node [below right] at (10.625,2) {\footnotesize $\dot E_{21}$};
-\draw [main stream, signalgruen] (wp1-top left) -- (9.375,2);
+\draw [main stream, signalgruen] (wp2-top left) -- (9.375,2);
 \node [below left] at (9.375,2) {\footnotesize $\dot E_{22}$};
 
 %%% energy streams and nodes %%%
-\draw [utility stream] (12,0) -- (wp1-right);
+\draw [utility stream] (12,0) -- (wp2-right);
 \node [right] at (12,0) {\footnotesize $\dot W_\text{el}$};
 \draw [utility stream, dashdotted] (10,-0.25) -- (12,-1);
 \node [right, anchor=west] at (12,-1) {\footnotesize $\sum\limits_k\dot E_{\text{D,}k}$};
@@ -121,8 +130,46 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \draw[dashed] (8.75,1.25) rectangle (11.25,-1.25);
 
 %%% mathematics %%%
-\node [below] at (10.625,-2.1) {\footnotesize $T_{11} > T_0$};
-\node [below] at (10.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}>0$};
+\node [below] at (10.625,-2.1) {\footnotesize $T_{11} \leq T_0$};
+\node [below] at (10.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}<0$};
+\node [below] at (10,-3.4) {\footnotesize $\varepsilon_\text{HP} = \dfrac{\left(\dot E_{22}-\dot E_{21}\right) + \left(\dot E_{12} - \dot E_{11}\right)}{\dot W_\text{el}}$};
+
+
+
+
+
+
+% ############## heat pump exergybalance 3 ####
+
+%%% components %%%
+%heat pump
+\pic[xscale=0.5,yscale=1] (wp3) at (15,0) {block};
+\node [align=center] at (wp3-anchor) {\footnotesize HT-HP};
+
+%%% pipes and nodes %%%
+\draw [main stream, signalgrau] (15.625,-2) -- (wp3-bottom right);
+\node [above right] at (15.625,-2) {\footnotesize $\dot E_{11}$};
+\draw [main stream, signalgrau] (wp3-bottom left) -- (14.375,-2);
+\node [above left] at (14.375,-2) {\footnotesize $\dot E_{12}$};
+\draw [main stream, signalgruen] (15.625,2) -- (wp3-top right);
+\node [below right] at (15.625,2) {\footnotesize $\dot E_{21}$};
+\draw [main stream, signalgruen] (wp3-top left) -- (14.375,2);
+\node [below left] at (14.375,2) {\footnotesize $\dot E_{22}$};
+
+%%% energy streams and nodes %%%
+\draw [utility stream] (17,0) -- (wp3-right);
+\node [right] at (17,0) {\footnotesize $\dot W_\text{el}$};
+\draw [utility stream, dashdotted] (15,-0.25) -- (17,-1);
+\node [right, anchor=west] at (17,-1) {\footnotesize $\sum\limits_k\dot E_{\text{D,}k}$};
+
+%%% system boundary %%%
+\draw[dashed] (13.75,1.25) rectangle (16.25,-1.25);
+
+%%% mathematics %%%
+
+\node [below] at (15,-2.1) {\footnotesize $T_{12} \geq T_0 \quad\text{and}\quad T_{11} > T_0$};
+\node [below] at (15.625,-2.7) {\footnotesize $\dot E_{11}-\dot E_{12}>0$};
+\node [below] at (15,-3.4) {\footnotesize $\varepsilon_\text{HP} = \dfrac{\dot E_{22}-\dot E_{21}}{\dot W_\text{el} + \left(\dot E_{11} - \dot E_{12}\right)}$};
 
 
 \end{tikzpicture}

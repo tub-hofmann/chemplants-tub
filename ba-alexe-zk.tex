@@ -44,30 +44,31 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 %%% components %%%
 %evaporator
 \pic (ev) at (2.5,1) {heat-exchanger-iso-1};
-\node [above] at (ev-shell top) {\footnotesize EV};
+\node [above] at (ev-shell top) {\footnotesize VD};
 %ihx
 \pic[rotate=90,xscale=-1] (ihx) at (5.5,2.5) {heat-exchanger-iso-1};
-\node [below, anchor=north east] at (ihx-pipes right) {\footnotesize IHX1};
+\node [below, anchor=north east] at (ihx-pipes right) {\footnotesize IWÜ};
 %compressor1
 \pic[scale=0.5] (cp1) at (5.5,4.5) {compressor-iso};
-\node [left, anchor=north east] at (cp1-inlet) {\footnotesize CP1};
+\node [left, anchor=north east] at (cp1-inlet) {\footnotesize KP1};
 %compressor2
 \pic[scale=0.5] (cp2) at (5.5,6.5) {compressor-iso};
-\node [left, anchor=south east] at (cp2-outlet) {\footnotesize CP2};
+\node [left, anchor=south east] at (cp2-outlet) {\footnotesize KP2};
 %merge
 \pic[rotate=90] (m1) at (5.5,5.5) {valve triple=main};
+\node [right] at (5.5,5.5) {\footnotesize ZU};
 %condenser
 \pic[rotate=90] (co) at (2.5,8.5) {heat-exchanger-iso-2};
-\node [above, anchor=south east] at (co-shell top) {\footnotesize CO};
+\node [above, anchor=south east] at (co-shell top) {\footnotesize GK};
 %seperator
 \pic[scale=0.33] (sep) at (4,4.5) {gas-liquid separator};
-\node [left] at (sep-bottom left) {\footnotesize SEP};
+\node [left] at (sep-bottom left) {\footnotesize PH};
 %valve1
 \pic[scale=1.25, rotate=90] (tv1) at (1,6.5) {valve=main};
-\node [right] at (tv1-anchor) {\footnotesize TV1};
+\node [right] at (tv1-anchor) {\footnotesize DR1};
 %valve2
 \pic[scale=1.25, rotate=90] (tv2) at (1,1.75) {valve=main};
-\node [right] at (tv2-anchor) {\footnotesize TV2};
+\node [right] at (tv2-anchor) {\footnotesize DR2};
 
 
 %%% pipes and nodes %%%
@@ -82,31 +83,25 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \draw [main stream, signalbraun] (sep-gas outlet) |- (m1-top);
 \draw [main stream, signalbraun] (sep-liquid outlet) |- (1,3.5) -- (tv2-right);
 \draw [main stream, signalbraun] (tv2-left) |- (ev-pipes left);
-
-\node [above, signalbraun] at (4,8.5) {\footnotesize 31};
-\node [above, signalbraun] at (4,2.75) {\footnotesize 32};
-\node [below, signalbraun] at (4,2.25) {\footnotesize 33};
-\node [right, signalbraun] at (1,5) {\footnotesize 34};
-\node [right, signalbraun] at (1,3) {\footnotesize 35};
-\node [above, signalbraun] at (1.5,1) {\footnotesize 36};
-
-
-\node [above, signalbraun] at (4,1) {\footnotesize 37};
-
-\node [left, signalbraun] at (5.5,3.25) {\footnotesize 38};
-\node [left, signalbraun] at (5.5,5.15) {\footnotesize 39};
-\node [left, signalbraun] at (5.5,5.85) {\footnotesize 40};
-
-\node [above, signalbraun] at (4,5.5) {\footnotesize 41};
-
-\draw [main stream, signalgrau] (2.75,-0.5) -- (ev-shell bottom right);
-\node [above right, signalgrau] at (2.75,-0.5) {\footnotesize 11};
-\draw [main stream, signalgrau] (ev-shell bottom left) -- (2.25,-0.5);
-\node [above left, signalgrau] at (2.25,-0.5) {\footnotesize 12};
+\node [above, signalbraun] at (4,1) {\footnotesize 27};
+\node [left, signalbraun] at (5.5,3.25) {\footnotesize 28};
+\node [left, signalbraun] at (5.5,5.15) {\footnotesize 29};
+\node [left, signalbraun] at (5.5,5.85) {\footnotesize 31};
+\node [above, signalbraun] at (4,8.5) {\footnotesize 21};
+\node [above, signalbraun] at (4,2.75) {\footnotesize 22};
+\node [below, signalbraun] at (4,2.25) {\footnotesize 23};
+\node [right, signalbraun] at (1,5) {\footnotesize 24};
+\node [right, signalbraun] at (1,3) {\footnotesize 25};
+\node [above, signalbraun] at (1.5,1) {\footnotesize 26};
+\node [above, signalbraun] at (4,5.5) {\footnotesize 30};
+\draw [main stream, signalgruen] (2.75,-0.5) -- (ev-shell bottom right);
+\node [above right, signalgruen] at (2.75,-0.5) {\footnotesize 11};
+\draw [main stream, signalgruen] (ev-shell bottom left) -- (2.25,-0.5);
+\node [above left, signalgruen] at (2.25,-0.5) {\footnotesize 12};
 \draw [main stream, signalgruen] (2.75,10) -- (co-pipes bottom);
-\node [below right, signalgruen] at (2.75,10) {\footnotesize 21};
+\node [below right, signalgruen] at (2.75,10) {\footnotesize 13};
 \draw [main stream, signalgruen] (co-pipes top) -- (2.25,10);
-\node [below left, signalgruen] at (2.25,10) {\footnotesize 22};
+\node [below left, signalgruen] at (2.25,10) {\footnotesize 14};
 
 %%% energy streams and nodes %%%
 
@@ -114,8 +109,7 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 
 %%% legend %%%%
 
-
-
 \end{tikzpicture}
+
 
 \end{document}

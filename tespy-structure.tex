@@ -66,7 +66,7 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, anchor=north] (exergy-sub2) at (exergy-sub1.south) {analyse$(T_\text{amb},p_\text{amb})$\\ generate\_plotly\_sankey\_input()\\ \ldots};
 
 %%% CONNECTION
-\node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, right = 20pt of network-cl] (connection-cl) {\small class Connection:};
+\node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, right = 30pt of network-cl] (connection-cl) {\small class Connection:};
 \node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, anchor=north] (connection-sub1) at (connection-cl.south) {label\\ \ldots \\fluid property data};
 \node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, anchor=north] (connection-sub2) at (connection-sub1.south) {\ldots \\get\_physical\_exergy():\\ get\_chemical\_exergy():};
 
@@ -80,7 +80,7 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, anchor=north] (bus-sub) at (bus-cl.south) {label\\ components\\ conversion factors\\ \ldots};
 
 %%% FLUID PROPERTIES
-\node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, right = 20pt of connection-cl] (fluids-mod) {\small fluid\_properties module};
+\node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, right = 30pt of connection-cl] (fluids-mod) {\small fluid\_properties module};
 \node [rectangle, draw=black, minimum width=140pt, text width= 130pt, thick, inner sep=5pt, align=left, anchor=north] (fluids-sub) at (fluids-mod.south) {$T(p,h)$, $s(p,h)$, $v(p,h)$, $\rho(p,h)$\\ inverse functions: $h(p,T)$,\ldots \\ $\rightarrow$ CoolProp API calls \\ \ldots \\ calc\_physical\_exergy(): \\ \hspace{10pt} $e^\text{M}=f\left(p,T_\text{amb},p_\text{amb}\right)$\\ \hspace{10pt} $e^\text{T}=f\left(p,h,T_\text{amb}\right)$\\ \hspace{10pt} $e^\text{PH}=e^\text{M}+e^\text{T}$\\ calc\_chemical\_exergy():\\ \hspace{10pt} pure substance, mixture\\ \hspace{10pt} if condensation:\\ \hspace{20pt} update molar analysis\\ \hspace{10pt} $e^\text{CH}=M^{-1}\left(x_i \bar{e}_i^\text{CH} + \ldots\right)$};
 
 
@@ -88,8 +88,8 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 
 \draw [solid] (network-sub) -- (exergy-cl);
 \draw [solid] (network-cl) -- (connection-cl);
-\draw [solid] (network-cl.east) -- ++(10pt,0) |- (component-cl.west);
-\draw [solid] (network-cl.east) -- ++(10pt,0) |- (bus-cl.west);
+\draw [solid] (network-cl.east) -- ++(15pt,0) |- (component-cl.west);
+\draw [solid] (network-cl.east) -- ++(15pt,0) |- (bus-cl.west);
 \draw [solid] (connection-cl) -- (fluids-mod);
 
 \end{tikzpicture}
