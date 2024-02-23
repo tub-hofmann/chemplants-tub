@@ -1,0 +1,84 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+%\setchpstreamtip{\empty}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (0,-1) grid (10,10);
+%\foreach \pos in {0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+%%% system boundary %%%
+
+%%% components %%%
+\pic[xscale=0.5,yscale=1] (p2h) at (2,2) {block};
+\node [align=center] at (p2h-anchor) {\footnotesize P2H};
+\pic[xscale=0.5,yscale=0.33,signalrot] (ht-tes) at (5,3.5) {dome tank};
+\node [align=center,signalrot] at (ht-tes-anchor) {\footnotesize HT-TES};
+\pic[xscale=0.5,yscale=0.33,signalblau] (lt-tes) at (5,0.5) {dome tank};
+\node [align=center,signalblau] at (lt-tes-anchor) {\footnotesize LT-TES};
+\pic[xscale=0.5,yscale=1] (h2p) at (8,2) {block};
+\node [align=center] at (h2p-anchor) {\footnotesize H2P};
+
+%%% pipes and nodes %%%
+\draw [main stream] (0,2.5) -- (p2h-left top);
+\node [above] at (0.5,2.5) {\footnotesize $\dot W_\text{el,in}$};
+\draw [main stream, dashed] (0,1.5) -- (p2h-left bottom);
+\node [below] at (0.5,1.5) {\footnotesize $\dot Q_\text{source}$};
+\draw [main stream] (p2h-top) |- (ht-tes-left);
+\node [above] at (3,3.5) {\footnotesize $\dot Q_\text{HT,in}$};
+\draw [main stream] (ht-tes-right) -| (h2p-top);
+\node [above] at (7,3.5) {\footnotesize $\dot Q_\text{HT,out}$};
+\draw [main stream] (h2p-right top) -- (10,2.5);
+\node [above] at (9.5,2.5) {\footnotesize $\dot W_\text{el,out}$};
+\draw [main stream, dashed] (h2p-right bottom) -- (10,1.5);
+\node [below] at (9.5,1.5) {\footnotesize $\dot Q_\text{loss}$};
+\draw [main stream, dashed] (h2p-bottom) |- (lt-tes-right);
+\node [above] at (7,0.5) {\footnotesize $\dot Q_\text{LT,in}$};
+\draw [main stream, dashed] (lt-tes-left) -| (p2h-bottom);
+\node [above] at (3,0.5) {\footnotesize $\dot Q_\text{LT,out}$};
+
+%%% energy streams and nodes %%%
+
+
+
+%%% legend %%%%
+
+
+
+\end{tikzpicture}
+
+\end{document}

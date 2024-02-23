@@ -1,0 +1,122 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+%\setchpstreamtip{\empty}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (0,-1) grid (10,10);
+%\foreach \pos in {0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+%%% system boundary %%%
+\draw[dashed, fill=lightgray] (4,9) rectangle (7.25,0);
+
+%%% components %%%
+
+%evaporator
+\pic (ev) at (2.5,1) {heat-exchanger-iso-1};
+\node [above] at (ev-shell top) {\footnotesize EV};
+
+%absorber
+\pic (abs) at (5,1) {absorber};
+\node [left, anchor=south east] at (abs-top) {\footnotesize ABS};
+
+%pump
+\pic[scale=0.5] (pu) at (6.5,3) {pump-iso};
+
+%ihx
+\pic[rotate=0] (ihx) at (5,5) {heat-exchanger-iso-2};
+\node [left, anchor=south east] at (ihx-shell top) {\footnotesize IHX};
+
+%valve2
+\pic[scale=1.25, rotate=90] (tv2) at (5,3) {valve=main};
+\node [left] at (tv2-anchor) {\footnotesize TV2};
+
+%desorber
+\pic (des) at (5,8) {desorber};
+\node [left, anchor=north east] at (des-bottom) {\footnotesize DES};
+
+
+%condenser
+\pic[rotate=90] (co) at (2.5,8) {heat-exchanger-iso-2};
+\node [below] at (co-shell left) {\footnotesize CO};
+%valve
+\pic[scale=1.25, rotate=90] (tv) at (1,3) {valve=main};
+\node [right] at (tv-anchor) {\footnotesize TV1};
+
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (ev-pipes right) -- (abs-left);
+\draw [main stream, signalbraun] (abs-right) -| (pu-inlet);
+\draw [main stream, signalbraun] (pu-outlet) |- (ihx-pipes bottom);
+\draw [main stream, signalbraun] (ihx-pipes top) -| (6.5,6.5) |- (des-right);
+\draw [main stream, signalbraun] (des-bottom) -- (ihx-shell top);
+\draw [main stream, signalbraun] (ihx-shell bottom) -- (tv2-right);
+\draw [main stream, signalbraun] (tv2-left) -- (abs-top);
+\draw [main stream, signalbraun] (des-left) -- (co-shell bottom);
+\draw [main stream, signalbraun] (co-shell top) -| (tv-right);
+\draw [main stream, signalbraun] (tv-left) |- (ev-pipes left);
+
+
+
+%\node [left, signalbraun] at (5.5,5) {\footnotesize 36};
+
+
+
+
+
+%%% energy streams and nodes %%%
+
+\draw [utility stream, signalblau] (2.5,-0.75) -- (ev-shell bottom);
+\node [above left, signalblau] at (2.5,-0.75) {\footnotesize $\dot Q (T < T_0)$};
+\draw [utility stream, signalorange] (abs-bottom) -- (5,-0.75);
+\node [above right, signalorange] at (5,-0.75) {\footnotesize $\dot Q (T_0)$};
+\draw [utility stream, signalorange] (co-shell right) -- (2.5,9.75);
+\node [below left, signalorange] at (2.5,9.75) {\footnotesize $\dot Q (T_0)$};
+\draw [utility stream, signalrot] (5,9.75) -- (des-top);
+\node [below right, signalrot] at (5,9.75) {\footnotesize $\dot Q (T > T_0)$};
+\draw [utility stream] (8,3) -- (pu-right);
+\node [rotate=90, right, anchor=south west] at (8,3) {$\dot W_\text{t,PU}$};
+
+
+
+%%% legend %%%%
+
+
+
+\end{tikzpicture}
+
+\end{document}

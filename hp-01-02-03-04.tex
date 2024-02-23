@@ -1,0 +1,309 @@
+\documentclass[%
+%10pt,
+%varwidth=false,
+%crop=true,
+border={0mm 0mm 0mm 0mm}]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+%\setchpstreamtip{\empty}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{signalgruen}{RGB}{49,127,67}    % RAL 6032 Wasser
+\definecolor{signalrot}{RGB}{155,36,35}      % RAL 3001 Dampf
+\definecolor{signalgrau}{RGB}{150,153,146}   % RAL 7004 Luft
+\definecolor{signalgelb}{RGB}{229,190,001}   % RAL 1003 brennbare und nicht brennbare Gase
+\definecolor{signalorange}{RGB}{208,93,40}   % RAL 2010 Säuren
+\definecolor{signalviolett}{RGB}{132,76,130} % RAL 4008 Laugen
+\definecolor{signalbraun}{RGB}{121,77,62}    % RAL 8002 brennbare und nicht brennbare Flüssigkeiten
+\definecolor{signalblau}{RGB}{30,45,110}     % RAL 5005 Sauerstoff
+
+
+
+\begin{document}
+\begin{tikzpicture}
+
+%help grid and labels
+%\draw[help lines] (0,-1) grid (7,10);
+%\foreach \pos in {0,1,2,3,4,5,6,7}
+%\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+
+
+\def\x{6.5}
+
+
+%%%% HP 01 SIMPLE %%%%
+
+
+%%% components %%%
+%evaporator
+\pic (ev) at (2.5,1) {heat-exchanger-iso-1};
+\node [above] at (ev-shell top) {\footnotesize EV};
+%compressor
+\pic[scale=0.5] (cp) at (5.5,6.5) {compressor-iso};
+\node [left] at (cp-left) {\footnotesize CP};
+%condenser
+\pic[rotate=90] (co) at (2.5,8.5) {heat-exchanger-iso-2};
+\node [below] at (co-shell left) {\footnotesize CO};
+%valve
+\pic[scale=1.25, rotate=90] (tv) at (1,6.5) {valve=main};
+\node [right] at (tv-anchor) {\footnotesize TV};
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (ev-pipes right) -| (cp-inlet);
+\draw [main stream, signalbraun] (cp-outlet) |- (co-shell bottom);
+\draw [main stream, signalbraun] (co-shell top) -| (tv-right);
+\draw [main stream, signalbraun] (tv-left) |- (ev-pipes left);
+\node [above, signalbraun] at (4,8.5) {\footnotesize 31};
+\node [above, signalbraun] at (1.5,8.5) {\footnotesize 32};
+\node [above, signalbraun] at (1.5,1) {\footnotesize 33};
+\node [above, signalbraun] at (4,1) {\footnotesize 34};
+\draw [main stream, signalgrau] (2.75,-0.5) -- (ev-shell bottom right);
+\node [above right, signalgrau] at (2.75,-0.5) {\footnotesize 11};
+\draw [main stream, signalgrau] (ev-shell bottom left) -- (2.25,-0.5);
+\node [above left, signalgrau] at (2.25,-0.5) {\footnotesize 12};
+\draw [main stream, signalgruen] (2.75,10) -- (co-pipes bottom);
+\node [below right, signalgruen] at (2.75,10) {\footnotesize 21};
+\draw [main stream, signalgruen] (co-pipes top) -- (2.25,10);
+\node [below left, signalgruen] at (2.25,10) {\footnotesize 22};
+
+%%% energy streams and nodes %%%
+
+%%% system boundary %%%
+
+%%% legend %%%%
+\node [below] at (3.25,-1) {(a) Simple cycle};
+
+
+
+%%%% HP 02 IHX %%%%
+
+
+%%% components %%%
+%evaporator
+\pic (evb) at (2.5+\x,1) {heat-exchanger-iso-1};
+\node [above] at (evb-shell top) {\footnotesize EV};
+%ihx
+\pic[rotate=90,xscale=-1] (ihxb) at (5.5+\x,2.5) {heat-exchanger-iso-1};
+\node [below, anchor=north east] at (ihxb-pipes right) {\footnotesize IHX1};
+%compressor
+\pic[scale=0.5] (cpb) at (5.5+\x,6.5) {compressor-iso};
+\node [left, anchor=south east] at (cpb-outlet) {\footnotesize CP1};
+%condenser
+\pic[rotate=90] (cob) at (2.5+\x,8.5) {heat-exchanger-iso-2};
+\node [above, anchor=south east] at (cob-shell top) {\footnotesize CO};
+%valve
+\pic[scale=1.25, rotate=90] (tvb) at (1+\x,6.5) {valve=main};
+\node [right] at (tvb-anchor) {\footnotesize TV1};
+
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (evb-pipes right) -| (ihxb-pipes right);
+\draw [main stream, signalbraun] (ihxb-pipes left) -- (cpb-inlet);
+\draw [main stream, signalbraun] (cpb-outlet) |- (cob-shell bottom);
+\draw [main stream, signalbraun] (cob-shell top) -| (1+\x,7.75) -| (2.75+\x,2.75) -- (ihxb-shell top left);
+\draw [main stream, signalbraun] (ihxb-shell top right) -| (2.25+\x,7.25) -| (tvb-right);
+\draw [main stream, signalbraun] (tvb-left) |- (evb-pipes left);
+\node [above, signalbraun] at (4+\x,8.5) {\footnotesize 31};
+\node [above, signalbraun] at (4+\x,2.75) {\footnotesize 32};
+\node [below, signalbraun] at (4+\x,2.25) {\footnotesize 33};
+\node [above, signalbraun] at (1.5+\x,1) {\footnotesize 34};
+\node [above, signalbraun] at (4+\x,1) {\footnotesize 35};
+\node [left, signalbraun] at (5.5+\x,5) {\footnotesize 36};
+\draw [main stream, signalgrau] (2.75+\x,-0.5) -- (evb-shell bottom right);
+\node [above right, signalgrau] at (2.75+\x,-0.5) {\footnotesize 11};
+\draw [main stream, signalgrau] (evb-shell bottom left) -- (2.25+\x,-0.5);
+\node [above left, signalgrau] at (2.25+\x,-0.5) {\footnotesize 12};
+\draw [main stream, signalgruen] (2.75+\x,10) -- (cob-pipes bottom);
+\node [below right, signalgruen] at (2.75+\x,10) {\footnotesize 21};
+\draw [main stream, signalgruen] (cob-pipes top) -- (2.25+\x,10);
+\node [below left, signalgruen] at (2.25+\x,10) {\footnotesize 22};
+
+%%% energy streams and nodes %%%
+
+%%% system boundary %%%
+
+%%% legend %%%%
+\node [below] at (3.25+\x,-1) {(b) With IHX};
+
+
+
+%%%% HP 03 PC %%%%
+
+
+%%% components %%%
+%evaporator
+\pic (evc) at (2.5+2*\x,1) {heat-exchanger-iso-1};
+\node [above] at (evc-shell top) {\footnotesize EV};
+%ihx1
+\pic[rotate=90,xscale=-1] (ihx1c) at (5.5+2*\x,2.5) {heat-exchanger-iso-1};
+\node [below, anchor=north east] at (ihx1c-pipes right) {\footnotesize IHX1};
+%ihx2
+\pic[rotate=90,xscale=-1] (ihx2c) at (4+2*\x,5) {heat-exchanger-iso-1};
+\node [below, anchor=north west] at (ihx2c-pipes right) {\footnotesize IHX2};
+%compressor1
+\pic[scale=0.5] (cp1c) at (5.5+2*\x,6.5) {compressor-iso};
+\node [left, anchor=south east] at (cp1c-outlet) {\footnotesize CP1};
+%compressor2
+\pic[scale=0.5] (cp2c) at (4+2*\x,6.5) {compressor-iso};
+\node [left, anchor=south east] at (cp2c-outlet) {\footnotesize CP2};
+%merge
+\pic[rotate=180] (m1c) at (4+2*\x,8.5) {valve triple=main };
+%condenser
+\pic[rotate=90] (coc) at (2.5+2*\x,8.5) {heat-exchanger-iso-2};
+\node [above, anchor=south east] at (coc-shell top) {\footnotesize CO};
+%seperator
+\pic[scale=0.33] (sepc) at (4+2*\x,3.5) {gas-liquid separator};
+\node [left] at (sepc-bottom left) {\footnotesize SEP};
+%valve1
+\pic[scale=1.25, rotate=90] (tv1c) at (1+2*\x,6.5) {valve=main};
+\node [right] at (tv1c-anchor) {\footnotesize TV1};
+%valve2
+\pic[scale=1.25, rotate=90] (tv2c) at (1+2*\x,1.75) {valve=main};
+\node [right] at (tv2c-anchor) {\footnotesize TV2};
+
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (evc-pipes right) -| (ihx1c-pipes right);
+\draw [main stream, signalbraun] (ihx1c-pipes left) -- (cp1c-inlet);
+\draw [main stream, signalbraun] (cp1c-outlet) |- (m1c-left);
+\draw [main stream, signalbraun] (m1c-right) -- (coc-shell bottom);
+\draw [main stream, signalbraun] (coc-shell top) -| (1+2*\x,7.75) -| (2.75+2*\x,5.25) -- (ihx2c-shell top left);
+\draw [main stream, signalbraun] (ihx2c-shell top right) -| (2.25+2*\x,7.25) -| (tv1c-right);
+\draw [main stream, signalbraun] (tv1c-left) |- (sepc-inlet left); 
+\draw [main stream, signalbraun] (sepc-liquid outlet) |- (ihx1c-shell top left); 
+\draw [main stream, signalbraun] (ihx1c-shell top right) -| (tv2c-right); 
+\draw [main stream, signalbraun] (tv2c-left) |- (evc-pipes left);
+\draw [main stream, signalbraun] (sepc-gas outlet) -- (ihx2c-pipes right);
+\draw [main stream, signalbraun] (ihx2c-pipes left) -- (cp2c-inlet);
+\draw [main stream, signalbraun] (cp2c-outlet) -- (m1c-top);
+\node [above, signalbraun] at (3.5+2*\x,8.5) {\footnotesize 31};
+\node [above, signalbraun] at (3+2*\x,5.25) {\footnotesize 32};
+\node [below, signalbraun] at (3+2*\x,4.75) {\footnotesize 33};
+\node [right, signalbraun] at (1+2*\x,5) {\footnotesize 34};
+\node [left, signalbraun] at (4+2*\x,2.75) {\footnotesize 35};
+\node [above, signalbraun] at (2.5+2*\x,2.25) {\footnotesize 36};
+\node [above, signalbraun] at (1.5+2*\x,1) {\footnotesize 37};
+\node [above, signalbraun] at (4+2*\x,1) {\footnotesize 38};
+\node [left, signalbraun] at (5.5+2*\x,5) {\footnotesize 39};
+\node [left, signalbraun] at (5.5+2*\x,8) {\footnotesize 40};
+\node [left, signalbraun] at (4+2*\x,4.25) {\footnotesize 41};
+\node [left, signalbraun] at (4+2*\x,5.75) {\footnotesize 42};
+\node [left, signalbraun] at (4+2*\x,8) {\footnotesize 43};
+\draw [main stream, signalgrau] (2.75+2*\x,-0.5) -- (evc-shell bottom right);
+\node [above right, signalgrau] at (2.75+2*\x,-0.5) {\footnotesize 11};
+\draw [main stream, signalgrau] (evc-shell bottom left) -- (2.25+2*\x,-0.5);
+\node [above left, signalgrau] at (2.25+2*\x,-0.5) {\footnotesize 12};
+\draw [main stream, signalgruen] (2.75+2*\x,10) -- (coc-pipes bottom);
+\node [below right, signalgruen] at (2.75+2*\x,10) {\footnotesize 21};
+\draw [main stream, signalgruen] (coc-pipes top) -- (2.25+2*\x,10);
+\node [below left, signalgruen] at (2.25+2*\x,10) {\footnotesize 22};
+
+%%% energy streams and nodes %%%
+
+%%% system boundary %%%
+
+%%% legend %%%%
+\node [below] at (3.25+2*\x,-1) {(c) With IHX and PC};
+
+
+
+%%%% HP 04 IC %%%%
+
+
+%%% components %%%
+%evaporator
+\pic (evd) at (2.5+3*\x,1) {heat-exchanger-iso-1};
+\node [above] at (evd-shell top) {\footnotesize EV};
+%ihx
+\pic[rotate=90,xscale=-1] (ihxd) at (5.5+3*\x,2.5) {heat-exchanger-iso-1};
+\node [below, anchor=north east] at (ihxd-pipes right) {\footnotesize IHX1};
+%compressor1
+\pic[scale=0.5] (cp1d) at (5.5+3*\x,4.5) {compressor-iso};
+\node [left, anchor=north east] at (cp1d-inlet) {\footnotesize CP1};
+%compressor2
+\pic[scale=0.5] (cp2d) at (5.5+3*\x,6.5) {compressor-iso};
+\node [left, anchor=south east] at (cp2d-outlet) {\footnotesize CP2};
+%merge
+\pic[rotate=90] (m1d) at (5.5+3*\x,5.5) {valve triple=main};
+%condenser
+\pic[rotate=90] (cod) at (2.5+3*\x,8.5) {heat-exchanger-iso-2};
+\node [above, anchor=south east] at (cod-shell top) {\footnotesize CO};
+%seperator
+\pic[scale=0.33] (sepd) at (4+3*\x,4.5) {gas-liquid separator};
+\node [left] at (sepd-bottom left) {\footnotesize SEP};
+%valve1
+\pic[scale=1.25, rotate=90] (tv1d) at (1+3*\x,6.5) {valve=main};
+\node [right] at (tv1d-anchor) {\footnotesize TV1};
+%valve2
+\pic[scale=1.25, rotate=90] (tv2d) at (1+3*\x,1.75) {valve=main};
+\node [right] at (tv2d-anchor) {\footnotesize TV2};
+
+
+%%% pipes and nodes %%%
+\draw [main stream, signalbraun] (evd-pipes right) -| (ihxd-pipes right);
+\draw [main stream, signalbraun] (ihxd-pipes left) -- (cp1d-inlet);
+\draw [main stream, signalbraun] (cp1d-outlet) -- (m1d-left);
+\draw [main stream, signalbraun] (m1d-right) -- (cp2d-inlet);
+\draw [main stream, signalbraun] (cp2d-outlet) |- (cod-shell bottom);
+\draw [main stream, signalbraun] (cod-shell top) -| (1+3*\x,7.75) -| (2.75+3*\x,2.75) -- (ihxd-shell top left);
+\draw [main stream, signalbraun] (ihxd-shell top right) -| (2.25+3*\x,7.25) -| (tv1d-right);
+\draw [main stream, signalbraun] (tv1d-left) |- (sepd-inlet left);
+\draw [main stream, signalbraun] (sepd-gas outlet) |- (m1d-top);
+\draw [main stream, signalbraun] (sepd-liquid outlet) |- (1+3*\x,3.5) -- (tv2d-right);
+\draw [main stream, signalbraun] (tv2d-left) |- (evd-pipes left);
+
+\node [above, signalbraun] at (4+3*\x,8.5) {\footnotesize 31};
+\node [above, signalbraun] at (4+3*\x,2.75) {\footnotesize 32};
+\node [below, signalbraun] at (4+3*\x,2.25) {\footnotesize 33};
+\node [right, signalbraun] at (1+3*\x,5) {\footnotesize 34};
+\node [right, signalbraun] at (1+3*\x,3) {\footnotesize 35};
+\node [above, signalbraun] at (1.5+3*\x,1) {\footnotesize 36};
+
+
+\node [above, signalbraun] at (4+3*\x,1) {\footnotesize 37};
+
+\node [left, signalbraun] at (5.5+3*\x,3.25) {\footnotesize 38};
+\node [left, signalbraun] at (5.5+3*\x,5.15) {\footnotesize 39};
+\node [left, signalbraun] at (5.5+3*\x,5.85) {\footnotesize 40};
+
+\node [above, signalbraun] at (4+3*\x,5.5) {\footnotesize 41};
+
+\draw [main stream, signalgrau] (2.75+3*\x,-0.5) -- (evd-shell bottom right);
+\node [above right, signalgrau] at (2.75+3*\x,-0.5) {\footnotesize 11};
+\draw [main stream, signalgrau] (evd-shell bottom left) -- (2.25+3*\x,-0.5);
+\node [above left, signalgrau] at (2.25+3*\x,-0.5) {\footnotesize 12};
+\draw [main stream, signalgruen] (2.75+3*\x,10) -- (cod-pipes bottom);
+\node [below right, signalgruen] at (2.75+3*\x,10) {\footnotesize 21};
+\draw [main stream, signalgruen] (cod-pipes top) -- (2.25+3*\x,10);
+\node [below left, signalgruen] at (2.25+3*\x,10) {\footnotesize 22};
+
+%%% energy streams and nodes %%%
+
+%%% system boundary %%%
+
+%%% legend %%%%
+\node [below] at (3.25+3*\x,-1) {(d) With IHX and IC};
+
+
+
+
+
+\end{tikzpicture}
+
+\end{document}
