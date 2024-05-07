@@ -35,72 +35,142 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \begin{tikzpicture}
 
 %help grid and labels
-\draw[help lines] (0,-1) grid (10,10);
-\foreach \pos in {0,1,2,3,4,5,6,7,8,9,10}
+\draw[help lines] (0,-1) grid (16,10);
+\foreach \pos in {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
 \draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
 \foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
 \draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
 
 %%% system boundary %%%
-%\draw[dashed, fill=lightgray] (4,9) rectangle (7.25,0);
+\draw[dotted] (1.25,7.75) rectangle (5.75,0.25);
+\node [left,anchor=south east] at (1.25,0.25) {HP};
+
+\draw[dotted] (10.25,7.75) rectangle (14.75,0.25);
+\node [left,anchor=south east] at (10.25,0.25) {ORC};
+
+\draw[dotted,fill=lightgray] (6.5,7.25) rectangle (9.5,4.5);
+\node [below] at (7.25,7.25) {\footnotesize $t$};
+\node [below] at (8.75,7.25) {\footnotesize $t+\Delta t_\text{TES}$};
+\node [above] at (8,7.25) {TES};
+
+
+
 
 %%% components %%%
 
-%evaporator
-\pic (eva) at (2.5,1) {heat-exchanger-iso-1};
-\node [above] at (eva-shell top) {\footnotesize EVA};
-
-%ihx
-\pic[rotate=90] (ihx) at (4,3.5) {heat-exchanger-iso-1};
-\node [right, anchor=west] at (ihx-shell bottom) {\footnotesize IHX};
-
+% HP %
 %compressor
-\pic[scale=0.5] (comp) at (4,5.5) {compressor-iso};
-\node [left, anchor=north east] at (comp-left) {\footnotesize COMP};
-
+\pic[rotate=180,scale=0.5] (comp) at (2,2) {compressor-iso};
+\node [below, anchor=north west] at (comp-left) {\footnotesize COMP};
 %condenser
-\pic[rotate=90] (cond) at (2.5,7.5) {heat-exchanger-iso-2};
-\node [below] at (cond-shell left) {\footnotesize COND};
-
+\pic[rotate=0] (cond) at (5,2) {heat-exchanger-iso-2};
+\node [above, anchor=south east] at (cond-shell left) {\footnotesize COND1};
 %valve
-\pic[scale=1.25, rotate=90] (val) at (1,2) {valve=main};
+\pic[scale=1.25, rotate=270] (val) at (5,6) {valve=main};
 \node [left] at (val-anchor) {\footnotesize VAL};
+%evaporator
+\pic[rotate=270] (eva) at (2,6) {heat-exchanger-iso-1};
+\node [right] at (eva-shell top) {\footnotesize EVA1};
+%ihx
+\pic[rotate=270] (ihx) at (2,4) {heat-exchanger-iso-1};
+\node [right] at (ihx-shell top) {\footnotesize IHX1};
+
+
+% TES %
+\draw[thick, fill=signalblau] (7,5.75) rectangle (7.5,4.75);
+\draw[thick, fill=signalrot] (7,6.75) rectangle (7.5,5.75);
+\draw[thick, fill=signalrot] (8.5,6.75) rectangle (9,5.75);
+\draw[thick, fill=signalblau] (8.5,5.75) rectangle (9,4.75);
+
+
+% ORC %
+%evaporator2
+\pic[rotate=90] (eva2) at (11,6) {heat-exchanger-iso-1};
+\node [right, anchor=south west] at (eva2-pipes right) {\footnotesize EVA2};
+%expander
+\pic[xscale=1.25,yscale=1.75] (exp) at (13.5,6) {turbine};
+\node [left] at (exp-inlet bottom) {\footnotesize EXP};
+%condenser2
+\pic (cond2) at (14,2) {heat-exchanger-iso-2};
+\node [above, anchor=south east] at (cond2-shell left) {\footnotesize COND2};
+%pump
+\pic[scale=0.5] (pump) at (11,2) {pump-iso};
+\node [right, anchor=north west] at (pump-right) {\footnotesize PUMP};
+%ihx2
+\pic[rotate=270] (ihx2) at (11,4) {heat-exchanger-iso-1};
+\node [right] at (ihx2-shell top) {\footnotesize IHX2};
 
 
 %%% pipes and nodes %%%
-\draw [main stream, signalbraun] (eva-pipes right) -| (ihx-pipes left);
-\node [below,signalbraun] at (1.5,1) {\footnotesize 34};
-\draw [main stream, signalbraun] (ihx-pipes right) -| (comp-inlet);
-\draw [main stream, signalbraun] (comp-outlet) |- (cond-shell bottom);
-\draw [main stream, signalbraun] (cond-shell top) -| (1,4) |- (ihx-shell top right);
+\draw [main stream, signalbraun] (comp-outlet) |- (2.5,0.5) -| (cond-shell bottom);
+\node [above,signalbraun] at (3.5,0.5) {\footnotesize 11};
+\draw [main stream, signalbraun] (cond-shell top) |- (ihx-shell top right);
+\node [below,signalbraun] at (3.5,3.75) {\footnotesize 12};
 \draw [main stream, signalbraun] (ihx-shell top left) -| (val-right);
-\draw [main stream, signalbraun] (val-left) |- (eva-pipes left);
+\node [above,signalbraun] at (3.5,4.25) {\footnotesize 13};
+\draw [main stream, signalbraun] (val-left) |- (2,7.5) -- (eva-pipes left);
+\node [below,signalbraun] at (3.5,7.5) {\footnotesize 14};
+\draw [main stream, signalbraun] (eva-pipes right) -| (ihx-pipes left);
+\node [left,signalbraun] at (2,5) {\footnotesize 15};
+\draw [main stream, signalbraun] (ihx-pipes right) -| (comp-inlet);
+\node [left,signalbraun] at (2,3) {\footnotesize 16};
 
+\draw [main stream, signalblau] (7,5.25) -| (6,3.5) |- (cond-pipes top);
+\node [above,signalblau] at (6.25,5.25) {\footnotesize 21};
+\draw [main stream, signalrot] (cond-pipes bottom) -| (8,4.5) |- (7.5,6.25);
+\node [below,signalrot] at (6.25,1.75) {\footnotesize 22};
 
+\draw [main stream, signalrot] (9,6.25) -- (eva2-shell top right);
+\node [above,signalrot] at (9.75,6.25) {\footnotesize 41};
+\draw [main stream, signalblau] (eva2-shell top left) -| (10,5.5) |- (9,5.25);
+\node [below,signalblau] at (9.75,5.25) {\footnotesize 42};
 
-%\node [left, signalbraun] at (5.5,5) {\footnotesize 36};
-
-
+\draw [main stream, signalgruen] (cond2-shell bottom) |- (11.5,0.5) -| (pump-inlet);
+\node [above,signalgruen] at (12.5,0.5) {\footnotesize 31};
+\draw [main stream, signalgruen] (pump-outlet) -- (ihx2-pipes right);
+\node [left,signalgruen] at (11,3) {\footnotesize 32};
+\draw [main stream, signalgruen] (ihx2-pipes left) -- (eva2-pipes left);
+\node [left,signalgruen] at (11,5) {\footnotesize 33};
+\draw [main stream, signalgruen] (eva2-pipes right) |- (11,7.5) -| (exp-inlet top);
+\node [below,signalgruen] at (12.5,7.5) {\footnotesize 34};
+\draw [main stream, signalgruen] (exp-outlet bottom) |- (ihx2-shell top left);
+\node [above,signalgruen] at (12.5,4.25) {\footnotesize 35};
+\draw [main stream, signalgruen] (ihx2-shell top right) -| (cond2-shell top);
+\node [below,signalgruen] at (12.5,3.75) {\footnotesize 36};
 
 
 
 %%% energy streams and nodes %%%
-
-%\draw [utility stream, signalblau] (2.5,-0.75) -- (ev-shell bottom);
-%\node [above left, signalblau] at (2.5,-0.75) {\footnotesize $\dot Q (T < T_0)$};
-%\draw [utility stream, signalorange] (abs-bottom) -- (5,-0.75);
-%\node [above right, signalorange] at (5,-0.75) {\footnotesize $\dot Q (T_0)$};
-%\draw [utility stream, signalorange] (co-shell right) -- (2.5,9.75);
-%\node [below left, signalorange] at (2.5,9.75) {\footnotesize $\dot Q (T_0)$};
-%\draw [utility stream, signalrot] (5,9.75) -- (des-top);
-%\node [below right, signalrot] at (5,9.75) {\footnotesize $\dot Q (T > T_0)$};
-%\draw [utility stream] (8,3) -- (pu-right);
-%\node [rotate=90, right, anchor=south west] at (8,3) {$\dot W_\text{t,PU}$};
+\draw [utility stream, dashed, signalrot] (0,6) -- (eva-shell bottom);
+\node [right,anchor=south west, signalrot] at (0,6) {\footnotesize $\dot Q(T_0)$};
+\draw [utility stream, dashed] (0,2) -- (comp-right);
+\node [right,anchor=south west] at (0,2) {\footnotesize $\dot W_\text{COMP}$};
 
 
+\draw [utility stream, dashed] (9,2) -- (pump-left);
+\node [left,anchor=south west] at (9,2) {\footnotesize $\dot W_\text{PUMP}$};
+\draw [utility stream, dashed] (exp-right) -- (16,6);
+\node [left,anchor=south east] at (16,6) {\footnotesize $\dot W_\text{EXP}$};
+\draw [utility stream, dashed, signalrot] (14.5,2) --(16,2);
+\node [left,anchor=south east, signalrot] at (16,2) {\footnotesize $\dot Q(T_0)$};
+
+
+%condenser2, pumpe ströme
 
 %%% legend %%%%
 
+\draw [main stream, signalbraun] (17,6.5) -- (18,6.5);
+\node [right] at (18,6.5) {\footnotesize R1336mzz(Z)};
+\draw [main stream, signalgruen] (17,6) -- (18,6);
+\node [right] at (18,6) {\footnotesize R152a};
+\draw [main stream, signalrot] (17,5.5) -- (18,5.5);
+\node [right] at (18,5.5) {\footnotesize Water, hot};
+\draw [main stream, signalblau] (17,5) -- (18,5);
+\node [right] at (18,5) {\footnotesize Water, cold};
+\draw [utility stream, dashed] (17,4.5) -- (18,4.5);
+\node [right] at (18,4.5) {\footnotesize Work rate};
+\draw [utility stream, dashed, signalrot] (17,4) -- (18,4);
+\node [right] at (18,4) {\footnotesize Heat rate};
 
 
 \end{tikzpicture}
