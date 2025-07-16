@@ -35,11 +35,11 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 \begin{tikzpicture}
 
 %help grid and labels
-\draw[help lines] (0,-1) grid (16,10);
-\foreach \pos in {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
-\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
-\foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
-\draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
+%\draw[help lines] (0,-1) grid (16,10);
+%\foreach \pos in {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+%\draw[shift={(\pos,-1)}] (0pt,2pt) -- (0pt,-2pt) node[below] {$\pos$};
+%\foreach \pos in {-1,0,1,2,3,4,5,6,7,8,9,10}
+%\draw[shift={(0,\pos)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\pos$};
 
 %%% system boundary %%%
 \draw[dotted] (1.25,7.75) rectangle (5.75,0.25);
@@ -160,9 +160,9 @@ border={0mm 0mm 0mm 0mm}]{standalone}
 %%% legend %%%%
 
 \draw [main stream, signalbraun] (17,6.5) -- (18,6.5);
-\node [right] at (18,6.5) {\footnotesize R1336mzz(Z)};
+\node [right] at (18,6.5) {\footnotesize HP working fluid};
 \draw [main stream, signalgruen] (17,6) -- (18,6);
-\node [right] at (18,6) {\footnotesize R152a};
+\node [right] at (18,6) {\footnotesize ORC working fluid};
 \draw [main stream, signalrot] (17,5.5) -- (18,5.5);
 \node [right] at (18,5.5) {\footnotesize Water, hot};
 \draw [main stream, signalblau] (17,5) -- (18,5);

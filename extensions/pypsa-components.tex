@@ -1,0 +1,81 @@
+%:		PyPSA Carrier
+\tikzset{pypsa carrier/.pic=%
+	{%
+	\draw [chpunitstyle, fill=#1]
+		(-0.8,-0.33) -- (0.8,-0.33) -- (1,0.33) -- (-1,0.33) -- cycle;
+	\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+        \coordinate (-top) at (0,0.33);
+        \coordinate (-bottom) at (0,-0.33);
+        \coordinate (-left) at (-0.9,0);
+		\coordinate (-right) at (0.9,0);
+	\end{scope}
+	}%
+}
+
+%:		PyPSA Storage
+\tikzset{pypsa storage/.pic=%
+	{%
+	\draw [chpunitstyle, fill=#1]
+		(-0.8,0) -- (-1,-0.33) -- (1,-0.33) -- (0.8,0) -- (1,0.33) -- (-1,0.33) -- cycle;
+	\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+        \coordinate (-top) at (0,0.33);
+        \coordinate (-bottom) at (0,-0.33);
+        \coordinate (-left) at (-0.8,0);
+		\coordinate (-right) at (0.8,0);
+	\end{scope}
+	}%
+}
+
+
+%:		PyPSA Generator
+\tikzset{pypsa generator/.pic=%
+	{%
+	\draw [chpunitstyle, fill=#1]
+		(-0.75,-0.33) -- (1,-0.33) -- (1,0.25) -- (0.75,0.33) -- (-1,0.33) -- (-1,-0.25) -- cycle;
+	\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+        \coordinate (-top) at (0,0.33);
+        \coordinate (-bottom) at (0,-0.33);
+        \coordinate (-left) at (-1,0);
+		\coordinate (-right) at (1,0);
+	\end{scope}
+	}%
+}
+
+
+%:		PyPSA Bus
+\tikzset{pypsa bus/.pic=%
+	{%
+	\draw [chpunitstyle, rounded corners, fill=#1]
+		(-1,-0.33) rectangle (1,0.33);
+	\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+        \coordinate (-top) at (0,0.33);
+        \coordinate (-bottom) at (0,-0.33);
+        \coordinate (-left) at (-1,0);
+		\coordinate (-right) at (1,0);
+	\end{scope}
+	}%
+}
+
+
+
+
+%:		PyPSA Sink
+\tikzset{pypsa sink/.pic=%
+	{%
+	\draw [chpunitstyle, fill=#1]
+		(-1,-0.667) -- (1,-0.667) -- (0.8,0.667) -- (-0.8,0.667) -- cycle;
+	\begin{scope} [scale=\chp@UnitScale]
+		\coordinate (-anchor) at (0,0);
+        \coordinate (-top) at (0,0.667);
+        \coordinate (-bottom) at (0,-0.667);
+        \coordinate (-left) at (-0.9,0);
+		\coordinate (-right) at (0.9,0);
+	\end{scope}
+	}%
+}
+
+

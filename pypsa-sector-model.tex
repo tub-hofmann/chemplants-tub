@@ -1,0 +1,142 @@
+\documentclass{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+% TABLEAU-10
+\definecolor{Tab10-A}{RGB}{78, 121, 167}
+\definecolor{Tab10-B}{RGB}{242, 142, 43}
+\definecolor{Tab10-C}{RGB}{225, 87, 89}
+\definecolor{Tab10-D}{RGB}{118, 183, 178}
+\definecolor{Tab10-E}{RGB}{89, 161, 79}
+\definecolor{Tab10-F}{RGB}{237, 201, 72}
+\definecolor{Tab10-G}{RGB}{176, 122, 161}
+\definecolor{Tab10-H}{RGB}{255, 157, 167}
+\definecolor{Tab10-I}{RGB}{156, 117, 95}
+\definecolor{Tab10-J}{RGB}{186, 176, 172}
+
+\definecolor{AC}{RGB}{74, 84, 106}
+
+\begin{document}
+\begin{tikzpicture}[font=\footnotesize]
+
+%%% legend %%%
+\pic[scale=1] (carrier) at (0,5.5) {pypsa carrier={white}};
+\node at (carrier-anchor) {Carrier};
+\pic[scale=1] (storage) at (0,4.5) {pypsa storage={white}};
+\node at (storage-anchor) {Storage};
+\pic[scale=1] (generator) at (0,3.5) {pypsa generator={white}};
+\node at (generator-anchor) {Generator};
+\pic[scale=1] (bus) at (0,2.5) {pypsa bus={white}};
+\node at (bus-anchor) {Bus};
+\pic[scale=1] (sink) at (0,1) {pypsa sink={white}};
+\node at (sink-anchor) {Sink};
+\draw [main stream] (-1,-0.5) -- (1,-0.5);
+\node [above] at (0,-0.5) {Flow};
+
+
+%%% model components %%%
+\pic (coal) at (4,6) {pypsa carrier={Tab10-I}};
+\node at (coal-anchor) {Coal};
+
+\pic (coal plant) at (4,4.5) {pypsa generator={Tab10-I}};
+\node at (coal plant-anchor) {Coal plant};
+
+\pic (gas) at (7,6) {pypsa carrier={Tab10-F}};
+\node at (gas-anchor) {Gas};
+
+\pic (gas plant) at (7,4.5) {pypsa generator={Tab10-F}};
+\node at (gas plant-anchor) {OCGT/CCGT};
+
+\pic (hydro) at (10,6) {pypsa carrier={Tab10-A}};
+\node at (hydro-anchor) {Hydro};
+
+\pic (hydro plant) at (10,4.5) {pypsa generator={Tab10-A}};
+\node at (hydro plant-anchor) {Hydro plant};
+
+\pic (solar) at (13,6) {pypsa carrier={Tab10-B}};
+\node at (solar-anchor) {Solar};
+
+\pic (pv plant) at (13,4.5) {pypsa generator={Tab10-B}};
+\node at (pv plant-anchor) {PV plant};
+
+\pic (wind) at (16,6) {pypsa carrier={Tab10-H}};
+\node at (wind-anchor) {Wind};
+
+\pic (wind turbine) at (16,4.5) {pypsa generator={Tab10-H}};
+\node at (wind turbine-anchor) {Wind turbine};
+
+
+\pic[xscale=7] (electricity bus) at (10,3) {pypsa bus={AC}};
+\node[white] at (electricity bus-anchor) {Electricity bus AC (one per region)};
+
+\pic (battery) at (20,3) {pypsa storage={Tab10-J}};
+\node at (battery-anchor) {Battery};
+
+
+\pic (conversion) at (16,1.5) {pypsa generator={Tab10-G}};
+\node at (conversion-anchor) {Conversion};
+
+\pic (hydrogen storage) at (20,1.5) {pypsa storage={Tab10-G}};
+\node[align=center] at (hydrogen storage-anchor) {Hydrogen\\ storage};
+
+
+
+\pic[scale=1] (electricity sink) at (4,-0.5) {pypsa sink={AC}};
+\node[align=center,white] at (electricity sink-anchor) {Electricity\\ demand\\ (region)};
+
+\pic[scale=1] (hydrogen sink) at (16,-0.5) {pypsa sink={Tab10-G}};
+\node[align=center] at (hydrogen sink-anchor) {Hydrogen\\ export\\ (bus)};
+
+
+
+%%% model flows %%%
+\draw [main stream] (coal-bottom) -- (coal plant-top);
+\draw [main stream] (coal plant-bottom) -- (4,3.33);
+
+\draw [main stream] (gas-bottom) -- (gas plant-top);
+\draw [main stream] (gas plant-bottom) -- (7,3.33);
+
+\draw [main stream] (hydro-bottom) -- (hydro plant-top);
+\draw [main stream] (hydro plant-bottom) -- (10,3.33);
+
+\draw [main stream] (solar-bottom) -- (pv plant-top);
+\draw [main stream] (pv plant-bottom) -- (13,3.33);
+
+\draw [main stream] (wind-bottom) -- (wind turbine-top);
+\draw [main stream] (wind turbine-bottom) -- (16,3.33);
+
+\draw [main stream] (4,2.667) -- (electricity sink-top);
+
+\draw [main stream] (18,3) -- (electricity bus-right);
+\draw [main stream] (18,3) -- (battery-left);
+
+\draw [main stream] (16,2) -- (16,2.667);
+\draw [main stream] (16,2) -- (16,1.83);
+
+\draw [main stream] (16,0.5) -- (16,1.17);
+\draw [main stream] (16,0.5) -- (16,0.17);
+
+\draw [main stream] (18,1.5) -- (conversion-right);
+\draw [main stream] (18,1.5) -- (hydrogen storage-left);
+
+\draw [main stream] (18,-0.5) -| (hydrogen storage-bottom);
+\draw [main stream] (18,-0.5) -- (hydrogen sink-right);
+
+\end{tikzpicture}
+
+\end{document}

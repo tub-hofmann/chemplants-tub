@@ -1,0 +1,51 @@
+\documentclass{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+% TABLEAU-10
+\definecolor{Tab10-A}{RGB}{78, 121, 167}
+\definecolor{Tab10-B}{RGB}{242, 142, 43}
+\definecolor{Tab10-C}{RGB}{225, 87, 89}
+\definecolor{Tab10-D}{RGB}{118, 183, 178}
+\definecolor{Tab10-E}{RGB}{89, 161, 79}
+\definecolor{Tab10-F}{RGB}{237, 201, 72}
+\definecolor{Tab10-G}{RGB}{176, 122, 161}
+\definecolor{Tab10-H}{RGB}{255, 157, 167}
+\definecolor{Tab10-I}{RGB}{156, 117, 95}
+\definecolor{Tab10-J}{RGB}{186, 176, 172}
+
+\definecolor{AC}{RGB}{74, 84, 106}
+
+\begin{document}
+\begin{tikzpicture}[font=\footnotesize]
+
+\pic[xscale=1.5] (bus) at (1,1) {pypsa bus={Tab10-J}};
+\node at (bus-anchor) {Cost-optimal mix};
+
+\pic[xscale=1.5] (bus) at (4.5,1) {pypsa bus={Tab10-E}};
+\node at (bus-anchor) {Ambitious policy};
+
+\pic[xscale=1.5] (bus) at (8,1) {pypsa bus={Tab10-F}};
+\node at (bus-anchor) {Grid extension};
+
+\pic[xscale=1.5] (bus) at (11.5,1) {pypsa bus={Tab10-H}};
+\node at (bus-anchor) {Hydrogen};
+
+\end{tikzpicture}
+
+\end{document}

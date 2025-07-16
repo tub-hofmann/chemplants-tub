@@ -1,0 +1,81 @@
+\documentclass{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[auto]{microtype}
+%\usepackage{cmbright}
+\usepackage{arev}
+\usepackage{amsmath, amssymb, amsfonts, icomma}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usepackage{chemplants-tub}
+\usepackage{xcolor}
+%define stream tip, default is stealth
+\setchpstreamtip{latex}
+%\setchpstreamtip{\empty}
+\setchpmainstreamthickness{thick}
+%\setchpunitthickness{very thick}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\definecolor{pypsa}{RGB}{74, 84, 106}
+
+\begin{document}
+\begin{tikzpicture}[font=\footnotesize]
+
+
+%%% Inputs
+\node[pypsa] at (2,8.5) {\normalsize \textbf{Inputs}}; 
+
+\draw[solid, thick, pypsa] (0,8) rectangle (4,6.5);
+\node [align=center] at (2,7.25) {Techno-economic data\\ projections for system\\components (plants,\\ storages, transmission)};
+
+\draw[solid, thick, pypsa] (0,6.25) rectangle (4,4.75);
+\node [align=center] at (2,5.5) {Demand time series};
+
+\draw[solid, thick, pypsa] (0,4.5) rectangle (4,3);
+\node [align=center] at (2,3.75) {Renewable energy\\ availability time series};
+
+\draw[dashed, thick, pypsa] (0,2.75) rectangle (4,1.25);
+\node [align=center] at (2,2) {Kazakhstan\\ power grid data};
+
+%%% Model
+\node[pypsa] at (8,8.5) {\normalsize \textbf{Model}}; 
+
+\draw[solid, thick, pypsa] (6,8) rectangle (10,1.25);
+\node [align=center] at (8,5) {Energy system\\optimization\\using PyPSA\\connected to solver};
+
+\draw[solid, thick, pypsa, fill=pypsa] (6.75,3) rectangle (9.25,2);
+\node [align=center, white] at (8,2.5) {Solver\\ Gurobi};
+
+%%% Outputs
+\node[pypsa] at (14,8.5) {\normalsize \textbf{Outputs}}; 
+
+\draw[solid, thick, pypsa] (12,8) rectangle (16,6.5);
+\node [align=center] at (14,7.25) {System costs};
+
+\draw[solid, thick, pypsa] (12,6.25) rectangle (16,4.75);
+\node [align=center] at (14,5.5) {Cost-optimal expansion\\ planning};
+
+\draw[solid, thick, pypsa] (12,4.5) rectangle (16,3);
+\node [align=center] at (14,3.75) {Cost-optimal dispatch\\ planning};
+
+\draw[solid, thick, pypsa] (12,2.75) rectangle (16,1.25);
+\node [align=center] at (14,2) {Multi-investment-period\\ optimization};
+
+%%% Arrows
+\draw [main stream, pypsa] (4,7.25) -- (6,7.25);
+\draw [main stream, pypsa] (4,5.5) -- (6,5.5);
+\draw [main stream, pypsa] (4,3.75) -- (6,3.75);
+\draw [main stream, dashed, pypsa] (4,2) -- (6,2);
+
+\draw [main stream, pypsa] (10,7.25) -- (12,7.25);
+\draw [main stream, pypsa] (10,5.5) -- (12,5.5);
+\draw [main stream, pypsa] (10,3.75) -- (12,3.75);
+\draw [main stream, pypsa] (10,2) -- (12,2);
+
+
+
+\end{tikzpicture}
+
+\end{document}
